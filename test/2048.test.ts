@@ -15,9 +15,7 @@ describe('2048', () => {
     const board: number[][] = game.board();
     const spaces = ([] as Number[]).concat(... board);
 
-    expect(board).toBeDefined();
-    expect(board.length).toBe(4);
-    expect(board[0].length).toBe(4);
+    expect(spaces.every((space: Number) => {return space == 0;})).toBeTruthy();
   })
 
 })
