@@ -42,8 +42,7 @@ describe("2048", () => {
     expect(spaces3).not.toEqual(spaces4);
   });
 
-  it("slides unsupported numbers to the left when tilting left", () => {
-    let game = new TwentyFortyEight();
+  function setupBoard(game: TwentyFortyEight) {
     let originalBoard = game.board();
 
     originalBoard.populate(0, 2, 2);
@@ -53,6 +52,11 @@ describe("2048", () => {
     originalBoard.populate(2, 3, 2);
     originalBoard.populate(3, 0, 2);
     originalBoard.populate(3, 2, 2);
+  }
+
+  it("slides unsupported numbers to the left when tilting left", () => {
+    let game = new TwentyFortyEight();
+    setupBoard(game);
 
     let tiltedBoard = game.tiltLeft();
 
@@ -70,15 +74,7 @@ describe("2048", () => {
 
   it("slides unsupported numbers to the right when tilting right", () => {
     let game = new TwentyFortyEight();
-    let originalBoard = game.board();
-
-    originalBoard.populate(0, 2, 2);
-    originalBoard.populate(1, 2, 2);
-    originalBoard.populate(1, 1, 2);
-    originalBoard.populate(2, 1, 2);
-    originalBoard.populate(2, 3, 2);
-    originalBoard.populate(3, 0, 2);
-    originalBoard.populate(3, 2, 2);
+    setupBoard(game);
 
     let tiltedBoard = game.tiltRight();
 
@@ -96,15 +92,7 @@ describe("2048", () => {
 
   it("slides unsupported numbers down when tilting down", () => {
     let game = new TwentyFortyEight();
-    let originalBoard = game.board();
-
-    originalBoard.populate(0, 2, 2);
-    originalBoard.populate(1, 2, 2);
-    originalBoard.populate(1, 1, 2);
-    originalBoard.populate(2, 1, 2);
-    originalBoard.populate(2, 3, 2);
-    originalBoard.populate(3, 0, 2);
-    originalBoard.populate(3, 2, 2);
+    setupBoard(game);
 
     let tiltedBoard = game.tiltDown();
 
@@ -116,6 +104,24 @@ describe("2048", () => {
     expectedBoard.populate(2, 1, 2);
     expectedBoard.populate(3, 0, 2);
     expectedBoard.populate(3, 1, 2);
+
+    expect(tiltedBoard).toEqual(expectedBoard);
+  });
+
+  it("slides unsupported numbers up when tilting up", () => {
+    let game = new TwentyFortyEight();
+    setupBoard(game);
+
+    let tiltedBoard = game.tiltUp();
+
+    let expectedBoard = new TwentyFortyEight().board();
+    expectedBoard.populate(0, 3, 2);
+    expectedBoard.populate(1, 3, 2);
+    expectedBoard.populate(1, 2, 2);
+    expectedBoard.populate(2, 3, 2);
+    expectedBoard.populate(2, 2, 2);
+    expectedBoard.populate(3, 3, 2);
+    expectedBoard.populate(3, 2, 2);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
