@@ -1,10 +1,16 @@
 class Board {
-  private _board: Number[][] = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
+  private _board: Number[][];
+
+  constructor(
+    spaces: Number[][] = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+  ) {
+    this._board = spaces;
+  }
 
   width(): number {
     return this._board[0].length;
@@ -43,21 +49,40 @@ class Board {
   }
 
   tiltLeftRow(row: Number[]): Number[] {
-    let populatedSpaces = row.filter((space: Number) => {return space != 0;});
+    let populatedSpaces = row.filter((space: Number) => {
+      return space != 0;
+    });
     let tiltedRow = populatedSpaces.concat([0, 0, 0, 0]).slice(0, row.length);
 
-    console.log(tiltedRow);
+    // console.log(tiltedRow);
 
     return tiltedRow;
   }
 
-  tiltLeft() {
-    this.print();
-
-    let tiltedBoard = new Board();
-    for (let row = 0; row < this._board.length; row++) {
-      tiltedBoard.setRow(row, this.tiltLeftRow(this._board[row]));
+  tiltLeft(board: Board): Board {
+    let tiltedBoard: Number[][] = [];
+    for (let row = 0; row < board._board.length; row++) {
+      tiltedBoard[row] = this.tiltLeftRow(this.tiltLeftRow(board._board[row]));
     }
+
+    return new Board(tiltedBoard);
+  }
+
+  rotateBoardBy90Degrees(board: Board): Board {
+    let spaces = board._board;
+    return new Board(
+      spaces[0].map((_, index) => spaces.map((row) => row[index]).reverse())
+    );
+  }
+
+  tiltRight(board: Board) {
+    var rotatedBoard = this.rotateBoardBy90Degrees(board);
+    rotatedBoard = this.rotateBoardBy90Degrees(rotatedBoard);
+
+    let tiltedBoard = this.tiltLeft(rotatedBoard);
+
+    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
+    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
 
     return tiltedBoard;
   }
@@ -90,7 +115,11 @@ class TwentyFortyEight {
   }
 
   tiltLeft(): Board {
-    return this._board.tiltLeft();
+    return this._board.tiltLeft(this._board);
+  }
+
+  tiltRight(): Board {
+    return this._board.tiltRight(this._board);
   }
 }
 

@@ -42,7 +42,7 @@ describe("2048", () => {
     expect(spaces3).not.toEqual(spaces4);
   });
 
-  it("slides unsupported numbers to the bottom when tilting down", () => {
+  it("slides unsupported numbers to the left when tilting left", () => {
     let game = new TwentyFortyEight();
     let originalBoard = game.board();
 
@@ -64,6 +64,32 @@ describe("2048", () => {
     expectedBoard.populate(1, 1, 2);
     expectedBoard.populate(1, 2, 2);
     expectedBoard.populate(2, 2, 2);
+
+    expect(tiltedBoard).toEqual(expectedBoard);
+  });
+
+  it("slides unsupported numbers to the right when tilting right", () => {
+    let game = new TwentyFortyEight();
+    let originalBoard = game.board();
+
+    originalBoard.populate(0, 2, 2);
+    originalBoard.populate(1, 2, 2);
+    originalBoard.populate(1, 1, 2);
+    originalBoard.populate(2, 1, 2);
+    originalBoard.populate(2, 3, 2);
+    originalBoard.populate(3, 0, 2);
+    originalBoard.populate(3, 2, 2);
+
+    let tiltedBoard = game.tiltRight();
+
+    let expectedBoard = new TwentyFortyEight().board();
+    expectedBoard.populate(3, 0, 2);
+    expectedBoard.populate(3, 1, 2);
+    expectedBoard.populate(3, 2, 2);
+    expectedBoard.populate(3, 3, 2);
+    expectedBoard.populate(2, 1, 2);
+    expectedBoard.populate(2, 2, 2);
+    expectedBoard.populate(1, 2, 2);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
