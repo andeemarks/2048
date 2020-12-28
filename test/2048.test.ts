@@ -11,4 +11,13 @@ describe('2048', () => {
     expect(board[0].length).toBe(4);
   })
 
+  it('the board starts empty', () => {
+    const board: number[][] = game.board();
+    const spaces = ([] as Number[]).concat(... board);
+
+    expect(board).toBeDefined();
+    expect(board.length).toBe(4);
+    expect(board[0].length).toBe(4);
+  })
+
 })
