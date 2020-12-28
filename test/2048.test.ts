@@ -93,4 +93,30 @@ describe("2048", () => {
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
+
+  it("slides unsupported numbers down when tilting down", () => {
+    let game = new TwentyFortyEight();
+    let originalBoard = game.board();
+
+    originalBoard.populate(0, 2, 2);
+    originalBoard.populate(1, 2, 2);
+    originalBoard.populate(1, 1, 2);
+    originalBoard.populate(2, 1, 2);
+    originalBoard.populate(2, 3, 2);
+    originalBoard.populate(3, 0, 2);
+    originalBoard.populate(3, 2, 2);
+
+    let tiltedBoard = game.tiltDown();
+
+    let expectedBoard = new TwentyFortyEight().board();
+    expectedBoard.populate(0, 0, 2);
+    expectedBoard.populate(1, 0, 2);
+    expectedBoard.populate(1, 1, 2);
+    expectedBoard.populate(2, 0, 2);
+    expectedBoard.populate(2, 1, 2);
+    expectedBoard.populate(3, 0, 2);
+    expectedBoard.populate(3, 1, 2);
+
+    expect(tiltedBoard).toEqual(expectedBoard);
+  });
 });

@@ -77,6 +77,18 @@ class Board {
 
     return tiltedBoard;
   }
+
+  tiltDown(board: Board) {
+    let rotatedBoard = this.rotateBoardBy90Degrees(
+      this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(board))
+    );
+
+    let tiltedBoard = this.tiltLeft(rotatedBoard);
+
+    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
+
+    return tiltedBoard;
+  }
 }
 
 class TwentyFortyEight {
@@ -111,6 +123,10 @@ class TwentyFortyEight {
 
   tiltRight(): Board {
     return this._board.tiltRight(this._board);
+  }
+
+  tiltDown(): Board {
+    return this._board.tiltDown(this._board);
   }
 }
 
