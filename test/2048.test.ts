@@ -30,4 +30,15 @@ describe('2048', () => {
     ).toBe(2);
     
   })
+
+  it('populates 2 different spaces each start', () => {
+    const spaces1 = ([] as Number[]).concat(...new TwentyFortyEight().start());
+    const spaces2 = ([] as Number[]).concat(...new TwentyFortyEight().start());
+    const spaces3 = ([] as Number[]).concat(...new TwentyFortyEight().start());
+    const spaces4 = ([] as Number[]).concat(...new TwentyFortyEight().start());
+
+    expect(spaces1).not.toEqual(spaces2);
+    expect(spaces2).not.toEqual(spaces3);
+    expect(spaces3).not.toEqual(spaces4);
+  })
 })
