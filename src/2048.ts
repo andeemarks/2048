@@ -21,6 +21,11 @@ class Board {
   populate(column: number, row: number, value: number) {
     this._board[column][row] = value;
   }
+
+  toString(): String {
+    //   let result = "";
+      return this._board.join("\n");
+  }
 }
 
 class TwentyFortyEight {
@@ -44,11 +49,11 @@ class TwentyFortyEight {
     this._board.populate(startColumns[0], startRows[0], 2);
     this._board.populate(startColumns[1], startRows[1], 2);
 
-    // console.log(this._board.spaces());
+    console.log(this._board.toString());
 
     return this._board;
   }
 }
 
-export { TwentyFortyEight };
-export { Board };
+export { TwentyFortyEight, Board };
+
