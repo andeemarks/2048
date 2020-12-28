@@ -40,10 +40,6 @@ class Board {
     return this._board[position - 1];
   }
 
-  setRow(position: number, row: Number[]) {
-    this._board[position] = row;
-  }
-
   print() {
     console.log(this.toString());
   }
@@ -52,11 +48,8 @@ class Board {
     let populatedSpaces = row.filter((space: Number) => {
       return space != 0;
     });
-    let tiltedRow = populatedSpaces.concat([0, 0, 0, 0]).slice(0, row.length);
 
-    // console.log(tiltedRow);
-
-    return tiltedRow;
+    return populatedSpaces.concat([0, 0, 0, 0]).slice(0, row.length);
   }
 
   tiltLeft(board: Board): Board {
@@ -76,13 +69,11 @@ class Board {
   }
 
   tiltRight(board: Board) {
-    var rotatedBoard = this.rotateBoardBy90Degrees(board);
-    rotatedBoard = this.rotateBoardBy90Degrees(rotatedBoard);
+    let rotatedBoard = this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(board));
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
 
-    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
-    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
+    tiltedBoard = this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(tiltedBoard));
 
     return tiltedBoard;
   }
