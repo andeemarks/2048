@@ -8,20 +8,18 @@ describe('2048', () => {
     const board = game.board();
 
     expect(board).toBeDefined();
-    expect(board.length).toBe(4);
-    expect(board[0].length).toBe(4);
+    expect(board.width()).toBe(4);
+    expect(board.height()).toBe(4);
   })
 
   it('the board starts empty', () => {
-    const board: Board = game.board();
-    const spaces = ([] as Number[]).concat(... board);
+    const spaces = game.board().spaces();
 
     expect(spaces.every((space: Number) => {return space == 0;})).toBeTruthy();
   })
 
   it('populates 2 spaces on the board when starting', () => {
-    const board: Board = game.start();
-    const spaces = ([] as Number[]).concat(...board);
+    const spaces = game.start().spaces();
 
     expect(
       spaces.filter((space: Number) => {
@@ -32,10 +30,10 @@ describe('2048', () => {
   })
 
   it('populates 2 different spaces each start', () => {
-    const spaces1 = ([] as Number[]).concat(...new TwentyFortyEight().start());
-    const spaces2 = ([] as Number[]).concat(...new TwentyFortyEight().start());
-    const spaces3 = ([] as Number[]).concat(...new TwentyFortyEight().start());
-    const spaces4 = ([] as Number[]).concat(...new TwentyFortyEight().start());
+    const spaces1 = new TwentyFortyEight().start().spaces();
+    const spaces2 = new TwentyFortyEight().start().spaces();
+    const spaces3 = new TwentyFortyEight().start().spaces();
+    const spaces4 = new TwentyFortyEight().start().spaces();
 
     expect(spaces1).not.toEqual(spaces2);
     expect(spaces2).not.toEqual(spaces3);
