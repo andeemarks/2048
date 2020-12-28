@@ -61,19 +61,24 @@ class Board {
     return new Board(tiltedBoard);
   }
 
-  rotateBoardBy90Degrees(board: Board): Board {
+  rotateBoardBy90Degrees(board: Board, _rotationCount: number = 1): Board {
     let spaces = board._board;
-    return new Board(
-      spaces[0].map((_, index) => spaces.map((row) => row[index]).reverse())
-    );
+    var rotatedSpaces = 
+      spaces[0].map((_, index) => spaces.map((row) => row[index]).reverse());
+
+    return new Board(rotatedSpaces);
   }
 
   tiltRight(board: Board) {
-    let rotatedBoard = this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(board));
+    let rotatedBoard = this.rotateBoardBy90Degrees(
+      this.rotateBoardBy90Degrees(board)
+    );
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
 
-    tiltedBoard = this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(tiltedBoard));
+    tiltedBoard = this.rotateBoardBy90Degrees(
+      this.rotateBoardBy90Degrees(tiltedBoard)
+    );
 
     return tiltedBoard;
   }
@@ -98,7 +103,7 @@ class Board {
     tiltedBoard = this.rotateBoardBy90Degrees(
       this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(tiltedBoard))
     );
-    
+
     return tiltedBoard;
   }
 }
@@ -123,8 +128,6 @@ class TwentyFortyEight {
 
     this._board.populate(startColumns[0], startRows[0], 2);
     this._board.populate(startColumns[1], startRows[1], 2);
-
-    // console.log(this._board.toString());
 
     return this._board;
   }
