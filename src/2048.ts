@@ -1,9 +1,12 @@
-class TwentyFortyEight {
-    private _board: number[][] =  [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+type Board = Number[][];
 
-    board(): number[][] {
+class TwentyFortyEight {
+    private _board: Board =  [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+
+    board(): Board {
         return this._board;
     }
 }
 
-export default TwentyFortyEight;
+export {TwentyFortyEight};
+export type {Board};
