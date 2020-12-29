@@ -51,4 +51,4 @@ class BoardControl {
   }
 }
 
-export { BoardControl };
+export default BoardControl;

@@ -130,7 +130,7 @@ describe("2048", () => {
   it("can play a game", () => {
     let game = new TwentyFortyEight();
     game.start();
-    
+
     new Display().show(game.board());
   });
 });
