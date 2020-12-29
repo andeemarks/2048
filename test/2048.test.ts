@@ -1,5 +1,6 @@
 import { TwentyFortyEight, Direction } from "../src/2048";
 import Display from "../src/display";
+import Board from "../src/board";
 
 describe("2048", () => {
   const game = new TwentyFortyEight();
@@ -43,94 +44,27 @@ describe("2048", () => {
     expect(spaces3).not.toEqual(spaces4);
   });
 
-  function setupBoard(game: TwentyFortyEight) {
-    let originalBoard = game.board();
-
-    originalBoard.populate(0, 2, 2);
-    originalBoard.populate(1, 2, 4);
-    originalBoard.populate(1, 1, 8);
-    originalBoard.populate(2, 1, 16);
-    originalBoard.populate(2, 3, 32);
-    originalBoard.populate(3, 0, 64);
-    originalBoard.populate(3, 2, 128);
-  }
-
-  it("slides unsupported numbers to the left when tilting left", () => {
-    let game = new TwentyFortyEight();
-    setupBoard(game);
-
-    let tiltedBoard = game.tilt(Direction.Left);
-
-    let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(0, 0, 64);
-    expectedBoard.populate(0, 1, 8);
-    expectedBoard.populate(1, 2, 4);
-    expectedBoard.populate(0, 3, 32);
-    expectedBoard.populate(1, 1, 16);
-    expectedBoard.populate(0, 2, 2);
-    expectedBoard.populate(2, 2, 128);
-
-    expect(tiltedBoard).toEqual(expectedBoard);
-  });
-
-  it("slides unsupported numbers to the right when tilting right", () => {
-    let game = new TwentyFortyEight();
-    setupBoard(game);
-
-    let tiltedBoard = game.tilt(Direction.Right);
-
-    let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(3, 0, 64);
-    expectedBoard.populate(3, 1, 16);
-    expectedBoard.populate(2, 2, 4);
-    expectedBoard.populate(3, 3, 32);
-    expectedBoard.populate(2, 1, 8);
-    expectedBoard.populate(1, 2, 2);
-    expectedBoard.populate(3, 2, 128);
-
-    expect(tiltedBoard).toEqual(expectedBoard);
-  });
-
-  it("slides unsupported numbers down when tilting down", () => {
-    let game = new TwentyFortyEight();
-    setupBoard(game);
-
-    let tiltedBoard = game.tilt(Direction.Down);
-
-    let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(0, 0, 2);
-    expectedBoard.populate(1, 0, 8);
-    expectedBoard.populate(1, 1, 4);
-    expectedBoard.populate(2, 0, 16);
-    expectedBoard.populate(2, 1, 32);
-    expectedBoard.populate(3, 0, 64);
-    expectedBoard.populate(3, 1, 128);
-
-    expect(tiltedBoard).toEqual(expectedBoard);
-  });
-
-  it("slides unsupported numbers up when tilting up", () => {
-    let game = new TwentyFortyEight();
-    setupBoard(game);
-
-    let tiltedBoard = game.tilt(Direction.Up);
-
-    let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(0, 3, 2);
-    expectedBoard.populate(1, 3, 4);
-    expectedBoard.populate(1, 2, 8);
-    expectedBoard.populate(2, 3, 32);
-    expectedBoard.populate(2, 2, 16);
-    expectedBoard.populate(3, 3, 128);
-    expectedBoard.populate(3, 2, 64);
-
-    expect(tiltedBoard).toEqual(expectedBoard);
-  });
-
   it("can play a game", () => {
     let game = new TwentyFortyEight();
     game.start();
 
     new Display().show(game.board());
   });
+
+  function countPopulatedSquares(board: Board): number {
+    return board.flatten().filter((space: number) => {
+      return space > 0;
+    }).length;
+  }
+
+  it("randomly populates a new empty square when tilting", () => {
+    let board = game.board();
+    let boardPopulationCount = countPopulatedSquares(board);
+    let newBoard = game.tilt(Direction.Left);
+    let newBoardPopulationCount = countPopulatedSquares(newBoard);
+
+    expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
+  });
+
+  it("errors when no remaining empty squares are available", () => {});
 });

@@ -32,17 +32,44 @@ class TwentyFortyEight {
     return this._board;
   }
 
+  private getRandomInt(max: number): number {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  private populateEmptySquare(board: Board): Board {
+    let spaces = board.spaces();
+    let emptySpaces = [];
+    for (let row = 0; row < board.height(); row++) {
+      for (let column = 0; column < board.rowAtPosition(row).length; column++) {
+        let space = spaces[row][column];
+        if (space == 0) {
+          emptySpaces.push({ row: row, column: column });
+        }
+      }
+    }
+
+    let emptySquare = emptySpaces[this.getRandomInt(emptySpaces.length)];
+    board.populate(emptySquare.column, emptySquare.row, 2);
+
+    return board;
+  }
+
   tilt(direction: Direction): Board {
+    var tiltedBoard;
     switch (direction) {
       case Direction.Left:
-        return BoardControl.tiltLeft(this._board);
+        tiltedBoard = BoardControl.tiltLeft(this._board);
       case Direction.Up:
-        return BoardControl.tiltUp(this._board);
+        tiltedBoard = BoardControl.tiltUp(this._board);
       case Direction.Down:
-        return BoardControl.tiltDown(this._board);
+        tiltedBoard = BoardControl.tiltDown(this._board);
       case Direction.Right:
-        return BoardControl.tiltRight(this._board);
+        tiltedBoard = BoardControl.tiltRight(this._board);
     }
+
+    tiltedBoard = this.populateEmptySquare(tiltedBoard);
+
+    return tiltedBoard;
   }
 }
 
