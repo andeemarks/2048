@@ -1,5 +1,5 @@
 class RowControl {
-  static tiltLeftRow(row: number[]): number[] {
+  static collapsePopulatedSpaces(row: number[]): number[] {
     let populatedSpaces = row.filter((space: Number) => {
       return space != 0;
     });
@@ -8,17 +8,31 @@ class RowControl {
       .concat([0, 0, 0, 0])
       .slice(0, row.length);
 
-    for (var i = 0; collapsedSpaces[i] != 0; i++) {
-      if (collapsedSpaces[i] == collapsedSpaces[i + 1]) {
-        collapsedSpaces[i] = 2 * collapsedSpaces[i];
-        collapsedSpaces = collapsedSpaces
+    return collapsedSpaces;
+  }
+
+  static tiltLeftRow(row: number[]): number[] {
+    let collapsedSpaces = this.collapsePopulatedSpaces(row);
+
+    return this.sumEqualNeighbours(collapsedSpaces);
+  }
+
+  static isSpacePopulated(space: number): boolean {
+    return space != 0;
+  }
+
+  static sumEqualNeighbours(spaces: number[]): number[] {
+    for (var i = 0; this.isSpacePopulated(spaces[i]); i++) {
+      if (spaces[i] == spaces[i + 1]) {
+        spaces[i] = 2 * spaces[i];
+        spaces = spaces
           .slice(0, i + 1)
-          .concat(collapsedSpaces.slice(i + 2))
+          .concat(spaces.slice(i + 2))
           .concat([0]);
       }
     }
 
-    return collapsedSpaces;
+    return spaces;
   }
 }
 
