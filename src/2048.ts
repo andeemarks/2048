@@ -63,36 +63,30 @@ class Board {
 
   rotateBoardBy90Degrees(board: Board, _rotationCount: number = 1): Board {
     let spaces = board._board;
-    var rotatedSpaces = 
-      spaces[0].map((_, index) => spaces.map((row) => row[index]).reverse());
 
-    return new Board(rotatedSpaces);
+    for (var i = 0; i < _rotationCount; i++) {
+      spaces = spaces[0].map((_, index) =>
+        spaces.map((row) => row[index]).reverse()
+      );
+    }
+
+    return new Board(spaces);
   }
 
   tiltRight(board: Board) {
-    let rotatedBoard = this.rotateBoardBy90Degrees(
-      this.rotateBoardBy90Degrees(board)
-    );
+    let rotatedBoard = this.rotateBoardBy90Degrees(board, 2);
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
 
-    tiltedBoard = this.rotateBoardBy90Degrees(
-      this.rotateBoardBy90Degrees(tiltedBoard)
-    );
-
-    return tiltedBoard;
+    return this.rotateBoardBy90Degrees(tiltedBoard, 2);
   }
 
   tiltDown(board: Board) {
-    let rotatedBoard = this.rotateBoardBy90Degrees(
-      this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(board))
-    );
+    let rotatedBoard = this.rotateBoardBy90Degrees(board, 3);
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
 
-    tiltedBoard = this.rotateBoardBy90Degrees(tiltedBoard);
-
-    return tiltedBoard;
+    return this.rotateBoardBy90Degrees(tiltedBoard);
   }
 
   tiltUp(board: Board) {
@@ -100,11 +94,7 @@ class Board {
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
 
-    tiltedBoard = this.rotateBoardBy90Degrees(
-      this.rotateBoardBy90Degrees(this.rotateBoardBy90Degrees(tiltedBoard))
-    );
-
-    return tiltedBoard;
+    return this.rotateBoardBy90Degrees(tiltedBoard, 3);
   }
 }
 
