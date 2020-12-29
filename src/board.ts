@@ -1,8 +1,8 @@
 class Board {
-  private _board: Number[][];
+  private _board: number[][];
 
   constructor(
-    spaces: Number[][] = [
+    spaces: number[][] = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
@@ -12,7 +12,7 @@ class Board {
     this._board = spaces;
   }
 
-  spaces(): Number[][] {
+  spaces(): number[][] {
     return this._board;
   }
 
@@ -24,8 +24,8 @@ class Board {
     return this._board.length;
   }
 
-  flatten(): Number[] {
-    return ([] as Number[]).concat(...this._board);
+  flatten(): number[] {
+    return ([] as number[]).concat(...this._board);
   }
 
   populate(column: number, row: number, value: number) {
@@ -40,7 +40,7 @@ class Board {
     return result;
   }
 
-  rowAtPosition(position: number): Number[] {
+  rowAtPosition(position: number): number[] {
     if (position < 0 || position >= this.height()) {
       throw new Error(`Illegal attempt to access row ${position} on board`);
     }
@@ -53,4 +53,4 @@ class Board {
   }
 }
 
-export { Board };
+export default Board;

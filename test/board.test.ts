@@ -1,4 +1,4 @@
-import { Board } from "../src/board";
+import Board from "../src/board";
 
 describe("Board", () => {
   const board = new Board();

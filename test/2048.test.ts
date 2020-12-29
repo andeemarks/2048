@@ -46,12 +46,12 @@ describe("2048", () => {
     let originalBoard = game.board();
 
     originalBoard.populate(0, 2, 2);
-    originalBoard.populate(1, 2, 2);
-    originalBoard.populate(1, 1, 2);
-    originalBoard.populate(2, 1, 2);
-    originalBoard.populate(2, 3, 2);
-    originalBoard.populate(3, 0, 2);
-    originalBoard.populate(3, 2, 2);
+    originalBoard.populate(1, 2, 4);
+    originalBoard.populate(1, 1, 8);
+    originalBoard.populate(2, 1, 16);
+    originalBoard.populate(2, 3, 32);
+    originalBoard.populate(3, 0, 64);
+    originalBoard.populate(3, 2, 128);
   }
 
   it("slides unsupported numbers to the left when tilting left", () => {
@@ -61,13 +61,13 @@ describe("2048", () => {
     let tiltedBoard = game.tilt(Direction.Left);
 
     let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(0, 0, 2);
-    expectedBoard.populate(0, 1, 2);
+    expectedBoard.populate(0, 0, 64);
+    expectedBoard.populate(0, 1, 8);
+    expectedBoard.populate(1, 2, 4);
+    expectedBoard.populate(0, 3, 32);
+    expectedBoard.populate(1, 1, 16);
     expectedBoard.populate(0, 2, 2);
-    expectedBoard.populate(0, 3, 2);
-    expectedBoard.populate(1, 1, 2);
-    expectedBoard.populate(1, 2, 2);
-    expectedBoard.populate(2, 2, 2);
+    expectedBoard.populate(2, 2, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -79,13 +79,13 @@ describe("2048", () => {
     let tiltedBoard = game.tilt(Direction.Right);
 
     let expectedBoard = new TwentyFortyEight().board();
-    expectedBoard.populate(3, 0, 2);
-    expectedBoard.populate(3, 1, 2);
-    expectedBoard.populate(3, 2, 2);
-    expectedBoard.populate(3, 3, 2);
-    expectedBoard.populate(2, 1, 2);
-    expectedBoard.populate(2, 2, 2);
+    expectedBoard.populate(3, 0, 64);
+    expectedBoard.populate(3, 1, 16);
+    expectedBoard.populate(2, 2, 4);
+    expectedBoard.populate(3, 3, 32);
+    expectedBoard.populate(2, 1, 8);
     expectedBoard.populate(1, 2, 2);
+    expectedBoard.populate(3, 2, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -98,12 +98,12 @@ describe("2048", () => {
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 0, 2);
-    expectedBoard.populate(1, 0, 2);
-    expectedBoard.populate(1, 1, 2);
-    expectedBoard.populate(2, 0, 2);
-    expectedBoard.populate(2, 1, 2);
-    expectedBoard.populate(3, 0, 2);
-    expectedBoard.populate(3, 1, 2);
+    expectedBoard.populate(1, 0, 8);
+    expectedBoard.populate(1, 1, 4);
+    expectedBoard.populate(2, 0, 16);
+    expectedBoard.populate(2, 1, 32);
+    expectedBoard.populate(3, 0, 64);
+    expectedBoard.populate(3, 1, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -116,12 +116,12 @@ describe("2048", () => {
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 3, 2);
-    expectedBoard.populate(1, 3, 2);
-    expectedBoard.populate(1, 2, 2);
-    expectedBoard.populate(2, 3, 2);
-    expectedBoard.populate(2, 2, 2);
-    expectedBoard.populate(3, 3, 2);
-    expectedBoard.populate(3, 2, 2);
+    expectedBoard.populate(1, 3, 4);
+    expectedBoard.populate(1, 2, 8);
+    expectedBoard.populate(2, 3, 32);
+    expectedBoard.populate(2, 2, 16);
+    expectedBoard.populate(3, 3, 128);
+    expectedBoard.populate(3, 2, 64);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });

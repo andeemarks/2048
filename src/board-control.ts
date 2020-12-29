@@ -1,5 +1,5 @@
-import { Board } from "./board";
-import { RowControl } from "./row-control";
+import Board from "./board";
+import RowControl from "./row-control";
 
 class BoardControl {
   static rotateBoardBy90Degrees(
@@ -18,7 +18,7 @@ class BoardControl {
   }
 
   static tiltLeft(board: Board): Board {
-    let tiltedBoard: Number[][] = [];
+    let tiltedBoard: number[][] = [];
     for (let row = 0; row < board.height(); row++) {
       tiltedBoard[row] = RowControl.tiltLeftRow(board.rowAtPosition(row));
     }
