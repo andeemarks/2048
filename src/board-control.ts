@@ -1,14 +1,7 @@
-import { Board } from './board';
+import { Board } from "./board";
+import { RowControl } from "./row-control";
 
 class BoardControl {
-  static tiltLeftRow(row: Number[]): Number[] {
-    let populatedSpaces = row.filter((space: Number) => {
-      return space != 0;
-    });
-
-    return populatedSpaces.concat([0, 0, 0, 0]).slice(0, row.length);
-  }
-
   static rotateBoardBy90Degrees(
     board: Board,
     _rotationCount: number = 1
@@ -27,7 +20,7 @@ class BoardControl {
   static tiltLeft(board: Board): Board {
     let tiltedBoard: Number[][] = [];
     for (let row = 0; row < board.height(); row++) {
-      tiltedBoard[row] = BoardControl.tiltLeftRow(board.rowAtPosition(row));
+      tiltedBoard[row] = RowControl.tiltLeftRow(board.rowAtPosition(row));
     }
 
     return new Board(tiltedBoard);
@@ -58,4 +51,4 @@ class BoardControl {
   }
 }
 
-export { BoardControl }
+export { BoardControl };
