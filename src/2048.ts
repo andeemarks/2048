@@ -40,23 +40,8 @@ class TwentyFortyEight {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  private findEmptySpaces(board: Board): { row: number; column: number }[] {
-    let emptySpaces = [];
-    let spaces = board.spaces();
-    for (let row = 0; row < board.height(); row++) {
-      for (let column = 0; column < board.rowAtPosition(row).length; column++) {
-        let space = spaces[row][column];
-        if (space == 0) {
-          emptySpaces.push({ row: row, column: column });
-        }
-      }
-    }
-
-    return emptySpaces;
-  }
-
   private populateEmptySpace(board: Board): Board {
-    let emptySpaces = this.findEmptySpaces(board);
+    let emptySpaces = board.findEmptySpaces();
 
     // console.log(emptySpaces);
     // console.log(board);

@@ -51,6 +51,21 @@ class Board {
   print() {
     console.log(this.toString());
   }
+
+  findEmptySpaces(): { row: number; column: number }[] {
+    let emptySpaces = [];
+    let spaces = this.spaces();
+    for (let row = 0; row < this.height(); row++) {
+      for (let column = 0; column < this.rowAtPosition(row).length; column++) {
+        let space = spaces[row][column];
+        if (space == 0) {
+          emptySpaces.push({ row: row, column: column });
+        }
+      }
+    }
+
+    return emptySpaces;
+  }
 }
 
 export default Board;

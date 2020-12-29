@@ -66,7 +66,7 @@ describe("2048", () => {
     expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
   });
 
-  it("errors when tilting a full board", () => {
+  it("errors when tilting a 0-sized board", () => {
     let fullBoard = new Board([[]]);
     let game = new TwentyFortyEight(fullBoard);
 
