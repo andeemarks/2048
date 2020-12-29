@@ -9,7 +9,11 @@ enum Direction {
 }
 
 class TwentyFortyEight {
-  private _board = new Board();
+  private _board: Board;
+
+  constructor(board: Board = new Board()) {
+    this._board = board;
+  }
 
   board(): Board {
     return this._board;
@@ -36,9 +40,9 @@ class TwentyFortyEight {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  private populateEmptySquare(board: Board): Board {
-    let spaces = board.spaces();
+  private findEmptySpaces(board: Board): { row: number; column: number }[] {
     let emptySpaces = [];
+    let spaces = board.spaces();
     for (let row = 0; row < board.height(); row++) {
       for (let column = 0; column < board.rowAtPosition(row).length; column++) {
         let space = spaces[row][column];
@@ -48,8 +52,21 @@ class TwentyFortyEight {
       }
     }
 
-    let emptySquare = emptySpaces[this.getRandomInt(emptySpaces.length)];
-    board.populate(emptySquare.column, emptySquare.row, 2);
+    return emptySpaces;
+  }
+
+  private populateEmptySpace(board: Board): Board {
+    let emptySpaces = this.findEmptySpaces(board);
+
+    // console.log(emptySpaces);
+    // console.log(board);
+
+    if (emptySpaces.length == 0) {
+      throw new Error(`Cannot find empty spaces - board looks full.`);
+    }
+
+    let emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
+    board.populate(emptySpace.column, emptySpace.row, 2);
 
     return board;
   }
@@ -67,7 +84,7 @@ class TwentyFortyEight {
         tiltedBoard = BoardControl.tiltRight(this._board);
     }
 
-    tiltedBoard = this.populateEmptySquare(tiltedBoard);
+    tiltedBoard = this.populateEmptySpace(tiltedBoard);
 
     return tiltedBoard;
   }

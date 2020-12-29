@@ -66,5 +66,12 @@ describe("2048", () => {
     expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
   });
 
-  it("errors when no remaining empty squares are available", () => {});
+  it("errors when tilting a full board", () => {
+    let fullBoard = new Board([[]]);
+    let game = new TwentyFortyEight(fullBoard);
+
+    expect(() => {
+      game.tilt(Direction.Left);
+    }).toThrowError();
+  });
 });
