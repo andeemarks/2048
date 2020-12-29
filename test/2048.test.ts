@@ -1,4 +1,5 @@
-import { TwentyFortyEight, Board } from "../src/2048";
+import { TwentyFortyEight } from "../src/2048";
+import { Board } from "../src/board";
 
 describe("2048", () => {
   const game = new TwentyFortyEight();
