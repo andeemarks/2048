@@ -58,7 +58,7 @@ describe("2048", () => {
     let game = new TwentyFortyEight();
     setupBoard(game);
 
-    let tiltedBoard = game.tiltLeft(Direction.Left);
+    let tiltedBoard = game.tilt(Direction.Left);
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 0, 2);
@@ -76,7 +76,7 @@ describe("2048", () => {
     let game = new TwentyFortyEight();
     setupBoard(game);
 
-    let tiltedBoard = game.tiltRight();
+    let tiltedBoard = game.tilt(Direction.Right);
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(3, 0, 2);
@@ -94,7 +94,7 @@ describe("2048", () => {
     let game = new TwentyFortyEight();
     setupBoard(game);
 
-    let tiltedBoard = game.tiltDown();
+    let tiltedBoard = game.tilt(Direction.Down);
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 0, 2);
@@ -112,7 +112,7 @@ describe("2048", () => {
     let game = new TwentyFortyEight();
     setupBoard(game);
 
-    let tiltedBoard = game.tiltUp();
+    let tiltedBoard = game.tilt(Direction.Up);
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 3, 2);

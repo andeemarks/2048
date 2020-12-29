@@ -1,4 +1,4 @@
-import { Board, BoardControl } from './board';
+import { Board, BoardControl } from "./board";
 
 enum Direction {
   Up = 1,
@@ -31,20 +31,17 @@ class TwentyFortyEight {
     return this._board;
   }
 
-  tiltLeft(_direction: Direction): Board {
-    return BoardControl.tiltLeft(this._board);
-  }
-
-  tiltRight(): Board {
-    return BoardControl.tiltRight(this._board);
-  }
-
-  tiltDown(): Board {
-    return BoardControl.tiltDown(this._board);
-  }
-
-  tiltUp(): Board {
-    return BoardControl.tiltUp(this._board);
+  tilt(_direction: Direction): Board {
+    switch (_direction) {
+      case Direction.Left:
+        return BoardControl.tiltLeft(this._board);
+      case Direction.Up:
+        return BoardControl.tiltUp(this._board);
+      case Direction.Down:
+        return BoardControl.tiltDown(this._board);
+      case Direction.Right:
+        return BoardControl.tiltRight(this._board);
+    }
   }
 }
 
