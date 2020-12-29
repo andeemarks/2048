@@ -1,4 +1,4 @@
-import { TwentyFortyEight } from "../src/2048";
+import { TwentyFortyEight, Direction } from "../src/2048";
 
 describe("2048", () => {
   const game = new TwentyFortyEight();
@@ -58,7 +58,7 @@ describe("2048", () => {
     let game = new TwentyFortyEight();
     setupBoard(game);
 
-    let tiltedBoard = game.tiltLeft();
+    let tiltedBoard = game.tiltLeft(Direction.Left);
 
     let expectedBoard = new TwentyFortyEight().board();
     expectedBoard.populate(0, 0, 2);

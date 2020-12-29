@@ -1,5 +1,12 @@
 import { Board, BoardControl } from './board';
 
+enum Direction {
+  Up = 1,
+  Down,
+  Left,
+  Right,
+}
+
 class TwentyFortyEight {
   private _board = new Board();
 
@@ -24,7 +31,7 @@ class TwentyFortyEight {
     return this._board;
   }
 
-  tiltLeft(): Board {
+  tiltLeft(_direction: Direction): Board {
     return BoardControl.tiltLeft(this._board);
   }
 
@@ -41,4 +48,4 @@ class TwentyFortyEight {
   }
 }
 
-export { TwentyFortyEight };
+export { TwentyFortyEight, Direction };
