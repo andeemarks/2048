@@ -12,6 +12,10 @@ class Board {
     this._board = spaces;
   }
 
+  spaces(): Number[][] {
+    return this._board;
+  }
+
   width(): number {
     return this._board[0].length;
   }
@@ -20,7 +24,7 @@ class Board {
     return this._board.length;
   }
 
-  spaces(): Number[] {
+  flatten(): Number[] {
     return ([] as Number[]).concat(...this._board);
   }
 
@@ -37,14 +41,16 @@ class Board {
   }
 
   rowAtPosition(position: number): Number[] {
-    return this._board[position - 1];
+    return this._board[position];
   }
 
   print() {
     console.log(this.toString());
   }
+}
 
-  tiltLeftRow(row: Number[]): Number[] {
+class BoardControl {
+  static tiltLeftRow(row: Number[]): Number[] {
     let populatedSpaces = row.filter((space: Number) => {
       return space != 0;
     });
@@ -52,17 +58,20 @@ class Board {
     return populatedSpaces.concat([0, 0, 0, 0]).slice(0, row.length);
   }
 
-  tiltLeft(board: Board): Board {
+  static tiltLeft(board: Board): Board {
     let tiltedBoard: Number[][] = [];
-    for (let row = 0; row < board._board.length; row++) {
-      tiltedBoard[row] = this.tiltLeftRow(this.tiltLeftRow(board._board[row]));
+    for (let row = 0; row < board.height(); row++) {
+      tiltedBoard[row] = BoardControl.tiltLeftRow(board.rowAtPosition(row));
     }
 
     return new Board(tiltedBoard);
   }
 
-  rotateBoardBy90Degrees(board: Board, _rotationCount: number = 1): Board {
-    let spaces = board._board;
+  static rotateBoardBy90Degrees(
+    board: Board,
+    _rotationCount: number = 1
+  ): Board {
+    let spaces = board.spaces();
 
     for (var i = 0; i < _rotationCount; i++) {
       spaces = spaces[0].map((_, index) =>
@@ -73,7 +82,7 @@ class Board {
     return new Board(spaces);
   }
 
-  tiltRight(board: Board) {
+  static tiltRight(board: Board) {
     let rotatedBoard = this.rotateBoardBy90Degrees(board, 2);
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
@@ -81,7 +90,7 @@ class Board {
     return this.rotateBoardBy90Degrees(tiltedBoard, 2);
   }
 
-  tiltDown(board: Board) {
+  static tiltDown(board: Board) {
     let rotatedBoard = this.rotateBoardBy90Degrees(board, 3);
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
@@ -89,7 +98,7 @@ class Board {
     return this.rotateBoardBy90Degrees(tiltedBoard);
   }
 
-  tiltUp(board: Board) {
+  static tiltUp(board: Board) {
     let rotatedBoard = this.rotateBoardBy90Degrees(board);
 
     let tiltedBoard = this.tiltLeft(rotatedBoard);
@@ -98,4 +107,4 @@ class Board {
   }
 }
 
-export { Board };
+export { Board, BoardControl };

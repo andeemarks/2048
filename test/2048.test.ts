@@ -1,5 +1,4 @@
 import { TwentyFortyEight } from "../src/2048";
-import { Board } from "../src/board";
 
 describe("2048", () => {
   const game = new TwentyFortyEight();
@@ -13,7 +12,7 @@ describe("2048", () => {
   });
 
   it("the board starts empty", () => {
-    const spaces = game.board().spaces();
+    const spaces = game.board().flatten();
 
     expect(
       spaces.every((space: Number) => {
@@ -23,7 +22,7 @@ describe("2048", () => {
   });
 
   it("populates 2 spaces on the board when starting", () => {
-    const spaces = game.start().spaces();
+    const spaces = game.start().flatten();
 
     expect(
       spaces.filter((space: Number) => {
@@ -33,10 +32,10 @@ describe("2048", () => {
   });
 
   it("populates 2 different spaces each start", () => {
-    const spaces1 = new TwentyFortyEight().start().spaces();
-    const spaces2 = new TwentyFortyEight().start().spaces();
-    const spaces3 = new TwentyFortyEight().start().spaces();
-    const spaces4 = new TwentyFortyEight().start().spaces();
+    const spaces1 = new TwentyFortyEight().start().flatten();
+    const spaces2 = new TwentyFortyEight().start().flatten();
+    const spaces3 = new TwentyFortyEight().start().flatten();
+    const spaces4 = new TwentyFortyEight().start().flatten();
 
     expect(spaces1).not.toEqual(spaces2);
     expect(spaces2).not.toEqual(spaces3);

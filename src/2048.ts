@@ -1,4 +1,4 @@
-import { Board } from './board';
+import { Board, BoardControl } from './board';
 
 class TwentyFortyEight {
   private _board = new Board();
@@ -25,19 +25,19 @@ class TwentyFortyEight {
   }
 
   tiltLeft(): Board {
-    return this._board.tiltLeft(this._board);
+    return BoardControl.tiltLeft(this._board);
   }
 
   tiltRight(): Board {
-    return this._board.tiltRight(this._board);
+    return BoardControl.tiltRight(this._board);
   }
 
   tiltDown(): Board {
-    return this._board.tiltDown(this._board);
+    return BoardControl.tiltDown(this._board);
   }
 
   tiltUp(): Board {
-    return this._board.tiltUp(this._board);
+    return BoardControl.tiltUp(this._board);
   }
 }
 
