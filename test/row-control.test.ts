@@ -16,4 +16,9 @@ describe("RowControl", () => {
     expect(RowControl.tiltLeftRow([0, 8, 0, 8])).toEqual([16, 0, 0, 0]);
     expect(RowControl.tiltLeftRow([4, 4, 0, 0])).toEqual([8, 0, 0, 0]);
   });
+
+  it("sums multiple successive populated spaces of the same value when tilting left", () => {
+    expect(RowControl.tiltLeftRow([2, 2, 4, 4])).toEqual([4, 8, 0, 0]);
+    expect(RowControl.tiltLeftRow([2, 2, 2, 4])).toEqual([4, 2, 4, 0]);
+  });
 });
