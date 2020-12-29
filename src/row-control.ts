@@ -21,9 +21,13 @@ class RowControl {
     return space != 0;
   }
 
+  static areNeighboursEqual(space1: number, space2: number) {
+    return space1 == space2;
+  }
+
   static sumEqualNeighbours(spaces: number[]): number[] {
     for (var i = 0; this.isSpacePopulated(spaces[i]); i++) {
-      if (spaces[i] == spaces[i + 1]) {
+      if (this.areNeighboursEqual(spaces[i], spaces[i + 1])) {
         spaces[i] = 2 * spaces[i];
         spaces = spaces
           .slice(0, i + 1)

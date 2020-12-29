@@ -1,5 +1,6 @@
 import Board from "./board";
 import { BoardControl } from "./board-control";
+import chalk from "chalk";
 
 enum Direction {
   Up = 1,

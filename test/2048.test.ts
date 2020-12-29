@@ -1,4 +1,5 @@
 import { TwentyFortyEight, Direction } from "../src/2048";
+import Display from "../src/display";
 
 describe("2048", () => {
   const game = new TwentyFortyEight();
@@ -124,5 +125,12 @@ describe("2048", () => {
     expectedBoard.populate(3, 2, 64);
 
     expect(tiltedBoard).toEqual(expectedBoard);
+  });
+
+  it("can play a game", () => {
+    let game = new TwentyFortyEight();
+    game.start();
+    
+    new Display().show(game.board());
   });
 });
