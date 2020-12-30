@@ -47,8 +47,6 @@ class TwentyFortyEight {
   private populateEmptySpace(board: Board): Board {
     let emptySpaces = board.findEmptySpaces();
 
-    // console.log(emptySpaces);
-
     if (emptySpaces.length == 0) {
       throw new Error(`Cannot find empty spaces - board looks full.`);
     }
@@ -61,7 +59,6 @@ class TwentyFortyEight {
 
   tilt(direction: Direction): Board {
     var tiltedBoard;
-    // console.log(this._board);
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(this._board);
@@ -72,8 +69,6 @@ class TwentyFortyEight {
       case Direction.Right:
         tiltedBoard = BoardControl.tiltRight(this._board);
     }
-
-    // console.log(tiltedBoard);
 
     tiltedBoard = this.populateEmptySpace(tiltedBoard);
 
