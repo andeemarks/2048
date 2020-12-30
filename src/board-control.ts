@@ -20,7 +20,7 @@ class BoardControl {
   private static tilt(board: Board): Board {
     let tiltedBoard: number[][] = [];
     for (let row = 0; row < board.height(); row++) {
-      tiltedBoard[row] = RowControl.tiltLeftRow(board.rowAtPosition(row));
+      tiltedBoard[row] = new RowControl(board.rowAtPosition(row)).tilt();
     }
 
     return new Board(tiltedBoard);
