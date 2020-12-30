@@ -27,6 +27,7 @@
     "lint:ci": "eslint . --ext .tsx,.ts"
   },
   "dependencies": {
+    "boxen": "^5.0.0",
     "chalk": "^4.1.0"
   }
 }
