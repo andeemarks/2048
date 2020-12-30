@@ -2,7 +2,7 @@ import Board from "./board";
 import BoardControl from "./board-control";
 
 enum Direction {
-  Up = 1,
+  Up,
   Down,
   Left,
   Right,
@@ -12,6 +12,10 @@ class TwentyFortyEight {
   private _board: Board;
 
   constructor(board: Board = new Board()) {
+    if (board.width() == 0 || board.width() != board.height()) {
+      throw new Error(`Cannot create game with invalid board`);
+    }
+
     this._board = board;
   }
 
@@ -44,7 +48,6 @@ class TwentyFortyEight {
     let emptySpaces = board.findEmptySpaces();
 
     // console.log(emptySpaces);
-    // console.log(board);
 
     if (emptySpaces.length == 0) {
       throw new Error(`Cannot find empty spaces - board looks full.`);
@@ -58,6 +61,7 @@ class TwentyFortyEight {
 
   tilt(direction: Direction): Board {
     var tiltedBoard;
+    // console.log(this._board);
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(this._board);
@@ -68,6 +72,8 @@ class TwentyFortyEight {
       case Direction.Right:
         tiltedBoard = BoardControl.tiltRight(this._board);
     }
+
+    // console.log(tiltedBoard);
 
     tiltedBoard = this.populateEmptySpace(tiltedBoard);
 

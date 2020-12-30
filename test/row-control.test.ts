@@ -11,6 +11,10 @@ describe("RowControl", () => {
     expect(RowControl.tiltLeftRow([0, 0, 0, 0])).toEqual([0, 0, 0, 0]);
   });
 
+  it("leaves fully non-collapsible rows unchanged when tilting", () => {
+    expect(RowControl.tiltLeftRow([2, 4, 8, 16])).toEqual([2, 4, 8, 16]);
+  });
+
   it("sums successive populated spaces of the same value when tilting left", () => {
     expect(RowControl.tiltLeftRow([2, 0, 0, 2])).toEqual([4, 0, 0, 0]);
     expect(RowControl.tiltLeftRow([0, 8, 0, 8])).toEqual([16, 0, 0, 0]);

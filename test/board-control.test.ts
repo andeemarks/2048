@@ -67,6 +67,28 @@ describe("BoardControl", () => {
     expect(tiltedBoard).toEqual(expectedBoard);
   });
 
+  it("tilting does not change completely empty boards", () => {
+    let board = new Board([
+      [0, 0],
+      [0, 0],
+    ]);
+
+    let tiltedBoard = BoardControl.tiltUp(board);
+
+    expect(tiltedBoard).toEqual(board);
+  });
+
+  it("tilting does not change completely full boards", () => {
+    let board = new Board([
+      [2, 4],
+      [8, 16],
+    ]);
+
+    let tiltedBoard = BoardControl.tiltUp(board);
+
+    expect(tiltedBoard).toEqual(board);
+  });
+
   it("slides unsupported numbers up when tilting up", () => {
     let board = setupBoard();
 
@@ -82,5 +104,33 @@ describe("BoardControl", () => {
     expectedBoard.populate(3, 2, 64);
 
     expect(tiltedBoard).toEqual(expectedBoard);
+  });
+
+  it("rotates the board clockwise 90 degrees", () => {
+    let board = new Board([
+      [2, 4],
+      [8, 16],
+    ]);
+
+    let rotatedBoard = BoardControl.rotateBoardBy90Degrees(board);
+
+    expect(rotatedBoard.spaces()).toEqual([
+      [8, 2],
+      [16, 4],
+    ]);
+  });
+
+  it("rotates the board clockwise 90 degrees a specified number of times", () => {
+    let board = new Board([
+      [2, 4],
+      [8, 16],
+    ]);
+
+    let rotatedBoard = BoardControl.rotateBoardBy90Degrees(board, 2);
+
+    expect(rotatedBoard.spaces()).toEqual([
+      [16, 8],
+      [4, 2],
+    ]);
   });
 });

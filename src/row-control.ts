@@ -26,7 +26,8 @@ class RowControl {
   }
 
   static sumEqualNeighbours(spaces: number[]): number[] {
-    for (var i = 0; this.isSpacePopulated(spaces[i]); i++) {
+    let rowLength = spaces.length;
+    for (var i = 0; this.isSpacePopulated(spaces[i]) && i < rowLength; i++) {
       if (this.areNeighboursEqual(spaces[i], spaces[i + 1])) {
         spaces[i] = 2 * spaces[i];
         spaces = spaces

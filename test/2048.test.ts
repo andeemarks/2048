@@ -66,8 +66,23 @@ describe("2048", () => {
     expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
   });
 
-  it("errors when tilting a 0-sized board", () => {
-    let fullBoard = new Board([[]]);
+  it("errors when creating a 0-sized board", () => {
+    expect(() => {
+      new TwentyFortyEight(new Board([[]]));
+    }).toThrowError();
+  });
+
+  it("errors when creating a non-square board", () => {
+    expect(() => {
+      new TwentyFortyEight(new Board([[2], [4]]));
+    }).toThrowError();
+  });
+
+  it("errors when tilting/populating a completely full board", () => {
+    let fullBoard = new Board([
+      [2, 4],
+      [8, 16],
+    ]);
     let game = new TwentyFortyEight(fullBoard);
 
     expect(() => {
