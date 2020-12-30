@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import Board from "./board";
 import BoardControl from "./board-control";
 import readline from "readline";
@@ -11,7 +9,7 @@ enum Direction {
   Right,
 }
 
-class TwentyFortyEight {
+class Game {
   private _board: Board;
 
   constructor(board: Board = new Board()) {
@@ -79,7 +77,7 @@ class TwentyFortyEight {
   }
 }
 
-export { TwentyFortyEight, Direction };
+export { Game, Direction };
 
 function play() {
   const rl = readline.createInterface({
@@ -99,5 +97,3 @@ function play() {
     process.exit(0);
   });
 }
-
-play();
