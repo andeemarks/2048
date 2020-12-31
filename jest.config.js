@@ -16,6 +16,6 @@ module.exports = {
     '__mocks__'
   ],
   transform: {
-    '^.+\\.[jt]sx?$': 'ts-jest',
+    '^.+\\.[t]sx?$': 'ts-jest',
   },
 };

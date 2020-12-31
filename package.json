@@ -4,7 +4,11 @@
   "description": "Typescript version of 2048 game.",
   "author": "Andy Marks",
   "private": false,
+  "main": "./lib/src/2048.js",
   "license": "MIT",
+  "bin": {
+    "2048-ts": "./lib/src/2048.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/andeemarks/2048"
@@ -18,16 +22,21 @@
     "eslint-plugin-import": "^2.18.2",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "ts-node": "^9.1.1"
   },
   "scripts": {
     "test": "yarn lint:types && jest --no-cache",
     "lint": "yarn lint:types && yarn lint:ci",
     "lint:types": "yarn tsc --noEmit -p .",
-    "lint:ci": "eslint . --ext .tsx,.ts"
+    "lint:ci": "eslint . --ext .tsx,.ts",
+    "create": "yarn build && yarn test",
+    "build": "tsc -p ."
   },
   "dependencies": {
     "boxen": "^5.0.0",
-    "chalk": "^4.1.0"
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "figlet": "^1.5.0"
   }
 }
