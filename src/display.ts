@@ -3,6 +3,8 @@ import boxen from "boxen";
 import Board from "./board";
 
 class Display {
+  constructor() {}
+
   pad(value: number) {
     if (value <= 9) {
       return `  ${value} `;
