@@ -28,6 +28,10 @@ class Board {
     return this.findEmptySpaces().length == 0;
   }
 
+  isComplete(): boolean {
+    return this.flatten().includes(2048);
+  }
+
   flatten(): number[] {
     return ([] as number[]).concat(...this._board);
   }

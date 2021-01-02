@@ -42,11 +42,31 @@ function setup() {
   show(display.format(board));
 }
 
-function exit() {
+function endOnPlayerExit() {
   console.log();
   console.log(
     chalk.red(
       figlet.textSync("Thanks for playing", { horizontalLayout: "full" })
+    )
+  );
+  process.exit(0);
+}
+
+function endOnFullBoard() {
+  console.log();
+  console.log(
+    chalk.red(
+      figlet.textSync("Game over - board full", { horizontalLayout: "full" })
+    )
+  );
+  process.exit(0);
+}
+
+function endOnCompleteBoard() {
+  console.log();
+  console.log(
+    chalk.green.bold(
+      figlet.textSync("Congratulations - you WON!!!", { horizontalLayout: "full" })
     )
   );
   process.exit(0);
@@ -58,11 +78,18 @@ function gameLoop() {
     try {
       board = game.tilt(board, tiltDirection.toUpperCase());
       show(display.format(board));
+
+      if (board.isFull()) {
+        endOnFullBoard();
+      }
+      if (board.isComplete()) {
+        endOnCompleteBoard();
+      }
     } catch (InvalidTiltDirectionError) {
       console.log(chalk.red.bold("Valid input only please :-)"));
     }
     rl.prompt();
-  }).on("close", exit);
+  }).on("close", endOnPlayerExit);
 }
 
 setup();
