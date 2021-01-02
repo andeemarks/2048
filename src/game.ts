@@ -8,6 +8,14 @@ enum Direction {
   Right = "R",
 }
 
+class InvalidTiltDirectionError extends Error {
+  constructor(message: any = "") {
+    super(message);
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
 class Game {
   private _board: Board;
 
@@ -58,7 +66,7 @@ class Game {
   }
 
   tilt(board: Board, direction: Direction): Board {
-    var tiltedBoard;
+    var tiltedBoard: Board;
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(board);
@@ -72,12 +80,13 @@ class Game {
       case Direction.Right:
         tiltedBoard = BoardControl.tiltRight(board);
         break;
+      default:
+        throw new InvalidTiltDirectionError(direction);
+        break;
     }
 
-    tiltedBoard = this.populateEmptySpace(tiltedBoard);
-
-    return tiltedBoard;
+    return this.populateEmptySpace(tiltedBoard);
   }
 }
 
-export { Game, Direction };
+export { Game, Direction, InvalidTiltDirectionError };

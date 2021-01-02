@@ -44,13 +44,6 @@ describe("2048", () => {
     expect(spaces3).not.toEqual(spaces4);
   });
 
-  it("can play a game", () => {
-    let game = new Game();
-    game.start();
-
-    new Display().show(game.board());
-  });
-
   function countPopulatedSquares(board: Board): number {
     return board.flatten().filter((space: number) => {
       return space > 0;

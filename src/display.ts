@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import boxen from "boxen";
 import Board from "./board";
 
 class Display {
@@ -18,12 +17,10 @@ class Display {
     return value;
   }
 
-  show(board: Board) {
+  format(board: Board): string {
     let spaces = board.spaces();
     let displaySpace: string = "";
-    for (let row = 0; row < board.height(); row++) {
-      displaySpace += "\n";
-
+    for (let row = board.height() - 1; row >= 0; row--) {
       for (let column = 0; column < board.rowAtPosition(row).length; column++) {
         let space = spaces[row][column];
         switch (space) {
@@ -65,16 +62,10 @@ class Display {
             break;
         }
       }
+      displaySpace += "\n";
     }
-    console.log(
-      boxen(displaySpace, {
-        padding: 1,
-        margin: 1,
-        borderStyle: "round",
-        borderColor: "white",
-        backgroundColor: "#222222",
-      })
-    );
+
+    return displaySpace.trim();
   }
 }
 
