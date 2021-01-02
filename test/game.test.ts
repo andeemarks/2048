@@ -60,7 +60,7 @@ describe("2048", () => {
   it("randomly populates a new empty square when tilting", () => {
     let board = game.board();
     let boardPopulationCount = countPopulatedSquares(board);
-    let newBoard = game.tilt(Direction.Left);
+    let newBoard = game.tilt(board, Direction.Left);
     let newBoardPopulationCount = countPopulatedSquares(newBoard);
 
     expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
@@ -86,7 +86,7 @@ describe("2048", () => {
     let game = new Game(fullBoard);
 
     expect(() => {
-      game.tilt(Direction.Left);
+      game.tilt(fullBoard, Direction.Left);
     }).toThrowError();
   });
 });

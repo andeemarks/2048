@@ -18,13 +18,6 @@ console.log(
   chalk.red(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
 );
 
-// rl.question("What is your name ? ", function (name) {
-//   rl.question("Where do you live ? ", function (country) {
-//     console.log(`${name}, is a citizen of ${country}`);
-//     rl.close();
-//   });
-// });
-
 let game = new Game();
 game.start();
 let board = game.board();
@@ -36,7 +29,7 @@ board.print();
 rl.prompt();
 rl.on("line", (tiltDirection) => {
   console.log(`|${tiltDirection}|`);
-  board = game.tilt(tiltDirection);
+  board = game.tilt(board, tiltDirection);
   board.print();
   rl.prompt();
 });

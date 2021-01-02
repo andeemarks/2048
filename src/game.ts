@@ -57,17 +57,17 @@ class Game {
     return board;
   }
 
-  tilt(direction: Direction): Board {
+  tilt(board: Board, direction: Direction): Board {
     var tiltedBoard;
     switch (direction) {
       case Direction.Left:
-        tiltedBoard = BoardControl.tiltLeft(this._board);
+        tiltedBoard = BoardControl.tiltLeft(board);
       case Direction.Up:
-        tiltedBoard = BoardControl.tiltUp(this._board);
+        tiltedBoard = BoardControl.tiltUp(board);
       case Direction.Down:
-        tiltedBoard = BoardControl.tiltDown(this._board);
+        tiltedBoard = BoardControl.tiltDown(board);
       case Direction.Right:
-        tiltedBoard = BoardControl.tiltRight(this._board);
+        tiltedBoard = BoardControl.tiltRight(board);
     }
 
     tiltedBoard = this.populateEmptySpace(tiltedBoard);
