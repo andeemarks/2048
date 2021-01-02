@@ -4,7 +4,7 @@ const chalk = require("chalk");
 const clear = require("clear");
 const figlet = require("figlet");
 const { Game } = require("./game");
-const Display = require("./display");
+import Display from "./display";
 import readline from "readline";
 
 const rl = readline.createInterface({
@@ -21,16 +21,14 @@ console.log(
 let game = new Game();
 game.start();
 let board = game.board();
-board.print();
-
-// let display = new Display();
-// display.show(board);
+let display = new Display();
+display.show(board);
 
 rl.prompt();
 rl.on("line", (tiltDirection) => {
   console.log(`|${tiltDirection}|`);
   board = game.tilt(board, tiltDirection);
-  board.print();
+  display.show(board);
   rl.prompt();
 }).on("close", function () {
   console.log(

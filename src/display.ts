@@ -19,18 +19,6 @@ class Display {
   }
 
   show(board: Board) {
-    board.populate(0, 0, 2);
-    board.populate(1, 0, 8);
-    board.populate(1, 1, 4);
-    board.populate(2, 0, 16);
-    board.populate(2, 1, 32);
-    board.populate(3, 0, 64);
-    board.populate(3, 1, 128);
-    board.populate(0, 2, 256);
-    board.populate(1, 2, 512);
-    board.populate(2, 2, 1024);
-    board.populate(3, 2, 2048);
-
     let spaces = board.spaces();
     let displaySpace: string = "";
     for (let row = 0; row < board.height(); row++) {
@@ -79,7 +67,7 @@ class Display {
       }
     }
     console.log(
-      boxen("Board" + displaySpace, {
+      boxen(displaySpace, {
         padding: 1,
         margin: 1,
         borderStyle: "round",
