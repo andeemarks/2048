@@ -12,4 +12,10 @@ describe("Board", () => {
       board.rowAtPosition(board.height());
     }).toThrowError();
   });
+
+  it("knows when it is full", () => {
+    expect(board.isFull()).toBeFalsy();
+    expect(new Board([[0]]).isFull()).toBeFalsy();
+    expect(new Board([[2]]).isFull()).toBeTruthy();
+  });
 });

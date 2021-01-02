@@ -24,6 +24,10 @@ class Board {
     return this._board.length;
   }
 
+  isFull(): boolean {
+    return this.findEmptySpaces().length == 0;
+  }
+
   flatten(): number[] {
     return ([] as number[]).concat(...this._board);
   }

@@ -33,7 +33,7 @@ function setup() {
   });
   clear();
   console.log(
-    chalk.red(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
+    chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
   );
   game = new Game();
   game.start();
