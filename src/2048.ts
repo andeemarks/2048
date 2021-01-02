@@ -32,9 +32,7 @@ rl.on("line", (tiltDirection) => {
   board = game.tilt(board, tiltDirection);
   board.print();
   rl.prompt();
-});
-
-rl.on("close", function () {
+}).on("close", function () {
   console.log(
     chalk.red(
       figlet.textSync("\nThanks for playing", { horizontalLayout: "full" })

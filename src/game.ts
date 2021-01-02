@@ -62,12 +62,16 @@ class Game {
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(board);
+        break;
       case Direction.Up:
         tiltedBoard = BoardControl.tiltUp(board);
+        break;
       case Direction.Down:
         tiltedBoard = BoardControl.tiltDown(board);
+        break;
       case Direction.Right:
         tiltedBoard = BoardControl.tiltRight(board);
+        break;
     }
 
     tiltedBoard = this.populateEmptySpace(tiltedBoard);

@@ -13,12 +13,14 @@ class BoardControl {
   }
 
   static tiltLeft(board: Board): Board {
+    console.log("left");
     let tiltedBoard = this.tilt(board);
 
     return tiltedBoard;
   }
 
   static tiltRight(board: Board): Board {
+    console.log("right");
     let rotatedBoard = BoardRotator.rotate90Degrees(board, 2);
 
     let tiltedBoard = this.tilt(rotatedBoard);
@@ -27,6 +29,7 @@ class BoardControl {
   }
 
   static tiltDown(board: Board): Board {
+    console.log("down");
     let rotatedBoard = BoardRotator.rotate90Degrees(board, 3);
 
     let tiltedBoard = this.tilt(rotatedBoard);
@@ -35,6 +38,7 @@ class BoardControl {
   }
 
   static tiltUp(board: Board): Board {
+    console.log("up");
     let rotatedBoard = BoardRotator.rotate90Degrees(board);
 
     let tiltedBoard = this.tilt(rotatedBoard);
