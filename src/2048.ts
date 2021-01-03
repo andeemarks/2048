@@ -57,6 +57,8 @@ function updateBoard() {
   console.log(
     chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
   );
+  console.log(chalk.bgWhiteBright.black(`Score: ${game.score()}`));
+
   show(display.format(board));
 }
 
