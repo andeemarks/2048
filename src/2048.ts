@@ -52,6 +52,14 @@ function endOnPlayerExit() {
   process.exit(0);
 }
 
+function updateBoard() {
+  clear();
+  console.log(
+    chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
+  );
+  show(display.format(board));
+}
+
 function endOnFullBoard() {
   console.log();
   console.log(
@@ -66,7 +74,9 @@ function endOnCompleteBoard() {
   console.log();
   console.log(
     chalk.green.bold(
-      figlet.textSync("Congratulations - you WON!!!", { horizontalLayout: "full" })
+      figlet.textSync("Congratulations - you WON!!!", {
+        horizontalLayout: "full",
+      })
     )
   );
   process.exit(0);
@@ -77,7 +87,7 @@ function gameLoop() {
   rl.on("line", (tiltDirection) => {
     try {
       board = game.tilt(board, tiltDirection.toUpperCase());
-      show(display.format(board));
+      updateBoard();
 
       if (board.isFull()) {
         endOnFullBoard();
