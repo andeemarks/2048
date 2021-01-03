@@ -1,3 +1,5 @@
+import {SpaceCollapseObserver, NullSpaceCollapseObserver} from "./space-collapse-observer";
+
 class RowControl {
   private _row: number[];
 
@@ -17,10 +19,10 @@ class RowControl {
     return collapsedSpaces;
   }
 
-  tilt(): number[] {
+  tilt(observer: SpaceCollapseObserver = new NullSpaceCollapseObserver()): number[] {
     let collapsedSpaces = this.collapsePopulatedSpaces();
 
-    return this.sumEqualNeighbours(collapsedSpaces);
+    return this.sumEqualNeighbours(collapsedSpaces, observer);
   }
 
   private isSpacePopulated(space: number): boolean {
@@ -31,11 +33,12 @@ class RowControl {
     return space1 == space2;
   }
 
-  sumEqualNeighbours(spaces: number[]): number[] {
+  sumEqualNeighbours(spaces: number[], observer: SpaceCollapseObserver): number[] {
     let rowLength = spaces.length;
     for (var i = 0; this.isSpacePopulated(spaces[i]) && i < rowLength; i++) {
       if (this.areNeighboursEqual(spaces[i], spaces[i + 1])) {
         spaces[i] = 2 * spaces[i];
+        observer.collapsed(spaces[i]);
         spaces = spaces
           .slice(0, i + 1)
           .concat(spaces.slice(i + 2))

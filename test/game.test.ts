@@ -1,5 +1,4 @@
 import { Game, Direction } from "../src/game";
-import Display from "../src/display";
 import Board from "../src/board";
 
 describe("2048", () => {
@@ -21,6 +20,34 @@ describe("2048", () => {
         return space == 0;
       })
     ).toBeTruthy();
+  });
+
+  it("starts the score at 0", () => {
+    expect(game.score()).toEqual(0);
+  });
+
+  it("adds to the score each time spaces are collapsed", () => {
+    let game = new Game(
+      new Board([
+        [2, 2],
+        [2, 4],
+      ])
+    );
+    game.tilt(game.board(), Direction.Left);
+
+    expect(game.score()).toEqual(4);
+  });
+
+  it("adds to the score each time multiple spaces are collapsed", () => {
+    let game = new Game(
+      new Board([
+        [2, 4],
+        [2, 4],
+      ])
+    );
+    game.tilt(game.board(), Direction.Down);
+
+    expect(game.score()).toEqual(12);
   });
 
   it("populates 2 spaces on the board when starting", () => {

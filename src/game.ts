@@ -1,5 +1,9 @@
 import Board from "./board";
 import BoardControl from "./board-control";
+import {
+  SpaceCollapseObserver,
+  NullSpaceCollapseObserver,
+} from "./space-collapse-observer";
 
 enum Direction {
   Up = "U",
@@ -16,8 +20,9 @@ class InvalidTiltDirectionError extends Error {
   }
 }
 
-class Game {
+class Game implements SpaceCollapseObserver {
   private _board: Board;
+  private _score: number = 0;
 
   constructor(board: Board = new Board()) {
     if (board.width() == 0 || board.width() != board.height()) {
@@ -27,8 +32,16 @@ class Game {
     this._board = board;
   }
 
+  collapsed(value: number): void {
+    this._score += value;
+  }
+
   board(): Board {
     return this._board;
+  }
+
+  score(): number {
+    return this._score;
   }
 
   shuffle(unshuffled: number[]): number[] {
@@ -69,16 +82,16 @@ class Game {
     var tiltedBoard: Board;
     switch (direction) {
       case Direction.Left:
-        tiltedBoard = BoardControl.tiltLeft(board);
+        tiltedBoard = BoardControl.tiltLeft(board, this);
         break;
       case Direction.Up:
-        tiltedBoard = BoardControl.tiltUp(board);
+        tiltedBoard = BoardControl.tiltUp(board, this);
         break;
       case Direction.Down:
-        tiltedBoard = BoardControl.tiltDown(board);
+        tiltedBoard = BoardControl.tiltDown(board, this);
         break;
       case Direction.Right:
-        tiltedBoard = BoardControl.tiltRight(board);
+        tiltedBoard = BoardControl.tiltRight(board, this);
         break;
       default:
         throw new InvalidTiltDirectionError(direction);
