@@ -6,10 +6,10 @@ import {
 } from "./space-collapse-observer";
 
 enum Direction {
-  Up = "U",
-  Down = "D",
-  Left = "L",
-  Right = "R",
+  Up = "up",
+  Down = "down",
+  Left = "left",
+  Right = "right",
 }
 
 class InvalidTiltDirectionError extends Error {

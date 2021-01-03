@@ -29,8 +29,10 @@ function setup() {
   rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: "Tilt (L)eft, (R)ight, (U)p, (D)own ? ",
   });
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+
   clear();
   console.log(
     chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
@@ -85,11 +87,15 @@ function endOnCompleteBoard() {
 }
 
 function gameLoop() {
-  rl.prompt();
-  rl.on("line", (tiltDirection) => {
-    try {
-      board = game.tilt(board, tiltDirection.toUpperCase());
-      updateBoard();
+  process.stdin.on("keypress", (_, key) => {
+    if (key.ctrl && key.name === "c") {
+      endOnPlayerExit();
+    } else {
+      try {
+        board = game.tilt(board, key.name.toLowerCase());
+      } catch (InvalidTiltDirectionError) {
+        console.log(chalk.red.bold("Valid input only please :-)"));
+      }
 
       if (board.isFull()) {
         endOnFullBoard();
@@ -97,11 +103,9 @@ function gameLoop() {
       if (board.isComplete()) {
         endOnCompleteBoard();
       }
-    } catch (InvalidTiltDirectionError) {
-      console.log(chalk.red.bold("Valid input only please :-)"));
+      updateBoard();
     }
-    rl.prompt();
-  }).on("close", endOnPlayerExit);
+  });
 }
 
 setup();
