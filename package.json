@@ -31,6 +31,7 @@
     "lint:types": "yarn tsc --noEmit -p .",
     "lint:ci": "eslint . --ext .tsx,.ts",
     "create": "yarn build",
+    "game": "yarn build && node lib/src/2048.js",
     "build": "tsc -p ."
   },
   "dependencies": {
