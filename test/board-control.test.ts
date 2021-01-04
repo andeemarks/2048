@@ -2,9 +2,9 @@ import BoardControl from "../src/board-control";
 import Board from "../src/board";
 
 describe("BoardControl", () => {
-  function setupBoard(): Board {
-    let originalBoard = new Board();
+  let originalBoard = new Board();
 
+  beforeAll(() => {
     originalBoard.populate(0, 2, 2);
     originalBoard.populate(1, 2, 4);
     originalBoard.populate(1, 1, 8);
@@ -12,14 +12,10 @@ describe("BoardControl", () => {
     originalBoard.populate(2, 3, 32);
     originalBoard.populate(3, 0, 64);
     originalBoard.populate(3, 2, 128);
-
-    return originalBoard;
-  }
+  });
 
   it("slides unsupported numbers to the left when tilting left", () => {
-    let board = setupBoard();
-
-    let tiltedBoard = BoardControl.tiltLeft(board);
+    let tiltedBoard = BoardControl.tiltLeft(originalBoard);
 
     let expectedBoard = new Board();
     expectedBoard.populate(0, 0, 64);
@@ -34,9 +30,7 @@ describe("BoardControl", () => {
   });
 
   it("slides unsupported numbers to the right when tilting right", () => {
-    let board = setupBoard();
-
-    let tiltedBoard = BoardControl.tiltRight(board);
+    let tiltedBoard = BoardControl.tiltRight(originalBoard);
 
     let expectedBoard = new Board();
     expectedBoard.populate(3, 0, 64);
@@ -51,9 +45,7 @@ describe("BoardControl", () => {
   });
 
   it("slides unsupported numbers down when tilting down", () => {
-    let board = setupBoard();
-
-    let tiltedBoard = BoardControl.tiltDown(board);
+    let tiltedBoard = BoardControl.tiltDown(originalBoard);
 
     let expectedBoard = new Board();
     expectedBoard.populate(0, 0, 2);
@@ -63,6 +55,21 @@ describe("BoardControl", () => {
     expectedBoard.populate(2, 1, 32);
     expectedBoard.populate(3, 0, 64);
     expectedBoard.populate(3, 1, 128);
+
+    expect(tiltedBoard).toEqual(expectedBoard);
+  });
+
+  it("slides unsupported numbers up when tilting up", () => {
+    let tiltedBoard = BoardControl.tiltUp(originalBoard);
+
+    let expectedBoard = new Board();
+    expectedBoard.populate(0, 3, 2);
+    expectedBoard.populate(1, 3, 4);
+    expectedBoard.populate(1, 2, 8);
+    expectedBoard.populate(2, 3, 32);
+    expectedBoard.populate(2, 2, 16);
+    expectedBoard.populate(3, 3, 128);
+    expectedBoard.populate(3, 2, 64);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -87,22 +94,5 @@ describe("BoardControl", () => {
     let tiltedBoard = BoardControl.tiltUp(board);
 
     expect(tiltedBoard).toEqual(board);
-  });
-
-  it("slides unsupported numbers up when tilting up", () => {
-    let board = setupBoard();
-
-    let tiltedBoard = BoardControl.tiltUp(board);
-
-    let expectedBoard = new Board();
-    expectedBoard.populate(0, 3, 2);
-    expectedBoard.populate(1, 3, 4);
-    expectedBoard.populate(1, 2, 8);
-    expectedBoard.populate(2, 3, 32);
-    expectedBoard.populate(2, 2, 16);
-    expectedBoard.populate(3, 3, 128);
-    expectedBoard.populate(3, 2, 64);
-
-    expect(tiltedBoard).toEqual(expectedBoard);
   });
 });

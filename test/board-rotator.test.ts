@@ -29,4 +29,14 @@ describe("BoardControl", () => {
       [4, 2],
     ]);
   });
+
+  it("errors when attempting to rotate less than 1 time", () => {
+    expect(() => {BoardRotator.rotate90Degrees(new Board(), 0)}).toThrowError();
+    expect(() => {BoardRotator.rotate90Degrees(new Board(), -1)}).toThrowError();
+  });
+
+  it("errors when attempting to rotate more than one full circle", () => {
+    expect(() => {BoardRotator.rotate90Degrees(new Board(), 4)}).toThrowError();
+    expect(() => {BoardRotator.rotate90Degrees(new Board(), 67)}).toThrowError();
+  });
 });
