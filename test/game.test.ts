@@ -95,7 +95,8 @@ describe("2048 Game", () => {
   describe("populating", () => {
     it("chooses either 2 or 4 for populating a new square", () => {
       let populationValues: number[] = [];
-      Array.from({ length: 100 }, () =>
+      let numberOfSamples = 500;
+      Array.from({ length: numberOfSamples }, () =>
         populationValues.push(new Game().choosePopulationValue())
       );
 
@@ -106,8 +107,10 @@ describe("2048 Game", () => {
         return value == 4;
       }).length;
 
-      expect(countOfValuesWith2 + countOfValuesWith4).toEqual(100);
-      expect(Math.abs(countOfValuesWith2 - countOfValuesWith4)).toBeLessThan(10);
+      expect(countOfValuesWith2 + countOfValuesWith4).toEqual(numberOfSamples);
+      expect(Math.abs(countOfValuesWith2 - countOfValuesWith4)).toBeLessThan(
+        numberOfSamples / 10
+      );
     });
   });
 

@@ -96,6 +96,7 @@ function gameLoop() {
       } catch (InvalidTiltDirectionError) {
         console.log(chalk.red.bold("Valid input only please :-)"));
       }
+      updateBoard();
 
       if (board.isFull()) {
         endOnFullBoard();
@@ -103,7 +104,6 @@ function gameLoop() {
       if (board.isComplete()) {
         endOnCompleteBoard();
       }
-      updateBoard();
     }
   });
 }
