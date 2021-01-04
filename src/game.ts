@@ -1,9 +1,6 @@
 import Board from "./board";
 import BoardControl from "./board-control";
-import {
-  SpaceCollapseObserver,
-  NullSpaceCollapseObserver,
-} from "./space-collapse-observer";
+import { SpaceCollapseObserver } from "./space-collapse-observer";
 
 enum Direction {
   Up = "up",

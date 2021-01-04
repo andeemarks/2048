@@ -78,14 +78,11 @@ describe("2048 Game", () => {
     });
 
     it("populates 2 different spaces each start", () => {
-      const spaces1 = new Game().start().flatten();
-      const spaces2 = new Game().start().flatten();
-      const spaces3 = new Game().start().flatten();
-      const spaces4 = new Game().start().flatten();
-
-      expect(spaces1).not.toEqual(spaces2);
-      expect(spaces2).not.toEqual(spaces3);
-      expect(spaces3).not.toEqual(spaces4);
+      Array.from({ length: 10 }, () =>
+        expect(new Game().start().flatten()).not.toEqual(
+          new Game().start().flatten()
+        )
+      );
     });
   });
 
