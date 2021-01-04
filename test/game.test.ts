@@ -92,6 +92,25 @@ describe("2048 Game", () => {
     }).length;
   }
 
+  describe("populating", () => {
+    it("chooses either 2 or 4 for populating a new square", () => {
+      let populationValues: number[] = [];
+      Array.from({ length: 100 }, () =>
+        populationValues.push(new Game().choosePopulationValue())
+      );
+
+      let countOfValuesWith2 = populationValues.filter((value: number) => {
+        return value == 2;
+      }).length;
+      let countOfValuesWith4 = populationValues.filter((value: number) => {
+        return value == 4;
+      }).length;
+
+      expect(countOfValuesWith2 + countOfValuesWith4).toEqual(100);
+      expect(Math.abs(countOfValuesWith2 - countOfValuesWith4)).toBeLessThan(10);
+    });
+  });
+
   describe("tilting", () => {
     it("randomly populates a new empty square when tilting", () => {
       let board = game.board();

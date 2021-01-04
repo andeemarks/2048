@@ -70,9 +70,13 @@ class Game implements SpaceCollapseObserver {
     }
 
     let emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
-    board.populate(emptySpace.column, emptySpace.row, 2);
+    board.populate(emptySpace.column, emptySpace.row, this.choosePopulationValue());
 
     return board;
+  }
+
+  choosePopulationValue(): number {
+    return this.getRandomInt(2) == 1 ? 2 : 4;
   }
 
   tilt(board: Board, direction: Direction): Board {
