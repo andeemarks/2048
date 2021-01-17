@@ -1,10 +1,10 @@
 import Board from "./board";
 import RowControl from "./row-control";
 import BoardRotator from "./board-rotator";
-import {SpaceCollapseObserver, NullSpaceCollapseObserver} from "./space-collapse-observer";
+import {RowTiltObserver, NullRowTiltObserver} from "./row-tilt-observer";
 
 class BoardControl {
-  private static tilt(board: Board, observer: SpaceCollapseObserver): Board {
+  private static tilt(board: Board, observer: RowTiltObserver): Board {
     let tiltedBoard: number[][] = [];
     for (let row = 0; row < board.height(); row++) {
       tiltedBoard[row] = new RowControl(board.rowAtPosition(row)).tilt(
@@ -17,7 +17,7 @@ class BoardControl {
 
   static tiltLeft(
     board: Board,
-    observer: SpaceCollapseObserver = new NullSpaceCollapseObserver()
+    observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
     let tiltedBoard = this.tilt(board, observer);
 
@@ -26,7 +26,7 @@ class BoardControl {
 
   static tiltRight(
     board: Board,
-    observer: SpaceCollapseObserver = new NullSpaceCollapseObserver()
+    observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
     let rotatedBoard = BoardRotator.rotate90Degrees(board, 2);
 
@@ -37,7 +37,7 @@ class BoardControl {
 
   static tiltDown(
     board: Board,
-    observer: SpaceCollapseObserver = new NullSpaceCollapseObserver()
+    observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
     let rotatedBoard = BoardRotator.rotate90Degrees(board, 3);
 
@@ -48,7 +48,7 @@ class BoardControl {
 
   static tiltUp(
     board: Board,
-    observer: SpaceCollapseObserver = new NullSpaceCollapseObserver()
+    observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
     let rotatedBoard = BoardRotator.rotate90Degrees(board);
 

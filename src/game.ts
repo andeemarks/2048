@@ -1,6 +1,6 @@
 import Board from "./board";
 import BoardControl from "./board-control";
-import { SpaceCollapseObserver } from "./space-collapse-observer";
+import { RowTiltObserver } from "./row-tilt-observer";
 
 enum Direction {
   Up = "up",
@@ -17,9 +17,10 @@ class InvalidTiltDirectionError extends Error {
   }
 }
 
-class Game implements SpaceCollapseObserver {
+class Game implements RowTiltObserver {
   private _board: Board;
   private _score: number = 0;
+  private hasSlid: boolean = false;
 
   constructor(board: Board = new Board()) {
     if (board.width() == 0 || board.width() != board.height()) {
@@ -31,6 +32,10 @@ class Game implements SpaceCollapseObserver {
 
   collapsed(value: number): void {
     this._score += value;
+  }
+
+  slid(): void {
+    this.hasSlid = true;
   }
 
   board(): Board {
@@ -81,6 +86,7 @@ class Game implements SpaceCollapseObserver {
 
   tilt(board: Board, direction: Direction): Board {
     var tiltedBoard: Board;
+    this.hasSlid = false;
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(board, this);
@@ -96,10 +102,9 @@ class Game implements SpaceCollapseObserver {
         break;
       default:
         throw new InvalidTiltDirectionError(direction);
-        break;
     }
 
-    return this.populateEmptySpace(tiltedBoard);
+    return this.hasSlid ? this.populateEmptySpace(tiltedBoard) : tiltedBoard;
   }
 }
 

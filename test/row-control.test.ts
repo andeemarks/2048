@@ -1,9 +1,47 @@
 import RowControl from "../src/row-control";
+import { RowTiltObserver } from "./row-tilt-observer";
 
 describe("RowControl", () => {
   function rowAfterTilting(row: number[]): number[] {
     return new RowControl(row).tilt();
   }
+
+  class TestObserver implements RowTiltObserver {
+    private _collapseCalled: boolean = false;
+    private _slidCalled: boolean = false;
+
+    slid(): void {
+      this._slidCalled = true;
+    }
+
+    collapsed(_value: number): void {
+      this._collapseCalled = true;
+    }
+
+    public get collapseCalled(): boolean {
+      return this._collapseCalled;
+    }
+
+    public get slidCalled(): boolean {
+      return this._slidCalled;
+    }
+  }
+
+  it("alerts the observer when space sliding happens", () => {
+    let testObserver = new TestObserver();
+
+    new RowControl([2, 0, 0, 4]).tilt(testObserver);
+
+    expect(testObserver.slidCalled).toBe(true);
+  });
+
+  it("does not alert the observer when no space sliding happens", () => {
+    let testObserver = new TestObserver();
+
+    new RowControl([2, 4, 0, 0]).tilt(testObserver);
+
+    expect(testObserver.slidCalled).toBe(false);
+  });
 
   it("collapses empty spaces when tilting", () => {
     expect(rowAfterTilting([2, 0, 0, 4])).toEqual([2, 4, 0, 0]);

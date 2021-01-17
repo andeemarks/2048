@@ -1,16 +1,4 @@
 #!/usr/bin/env node
-
-function show(board: string) {
-  console.log(
-    boxen(board, {
-      padding: 0,
-      margin: 0,
-      borderStyle: "round",
-      borderColor: "white",
-      backgroundColor: "#222222",
-    })
-  );
-}
 const chalk = require("chalk");
 const clear = require("clear");
 const figlet = require("figlet");
@@ -24,6 +12,18 @@ let rl: readline.Interface;
 let board: Board;
 let game: typeof Game;
 let display: Display;
+
+function show(board: string) {
+  console.log(
+    boxen(board, {
+      padding: 0,
+      margin: 0,
+      borderStyle: "round",
+      borderColor: "white",
+      backgroundColor: "#222222",
+    })
+  );
+}
 
 function setup() {
   rl = readline.createInterface({

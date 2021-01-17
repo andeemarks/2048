@@ -124,6 +124,16 @@ describe("2048 Game", () => {
       expect(newBoardPopulationCount).toEqual(boardPopulationCount + 1);
     });
 
+    it("skips populating a new empty square when tilting an already tilted board", () => {
+      let board = new Board([
+        [2, 0],
+        [2, 0],
+      ]);
+      let newBoard = game.tilt(board, Direction.Left);
+
+      expect(newBoard).toEqual(board);
+    });
+
     it("errors when tilting/populating a completely full board", () => {
       let fullBoard = new Board([
         [2, 4],
