@@ -7,22 +7,37 @@ const { Game } = require("./game");
 import Display from "./display";
 import Board from "./board";
 import readline from "readline";
+import { LevelUpScoreObserver } from "./score-observer";
 
 let rl: readline.Interface;
 let board: Board;
 let game: typeof Game;
 let display: Display;
+let scoreObserver = new LevelUpScoreObserver();
 
 function show(board: string) {
-  console.log(
-    boxen(board, {
-      padding: 0,
-      margin: 0,
-      borderStyle: "round",
-      borderColor: "white",
-      backgroundColor: "#222222",
-    })
-  );
+  if (scoreObserver.hasNewScoreLevel()) {
+    scoreObserver.resetNetScoreLevel();
+    console.log(
+      boxen(board, {
+        padding: 0,
+        margin: 0,
+        borderStyle: "round",
+        borderColor: "yellow",
+        backgroundColor: "#222222",
+      })
+    );
+  } else {
+    console.log(
+      boxen(board, {
+        padding: 0,
+        margin: 0,
+        borderStyle: "round",
+        borderColor: "white",
+        backgroundColor: "#222222",
+      })
+    );
+  }
 }
 
 enum EndReason {
@@ -43,8 +58,9 @@ function setup() {
   console.log(
     chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
   );
+
   game = new Game();
-  game.start();
+  game.start(scoreObserver);
   board = game.board();
   display = new Display();
   show(display.format(board));

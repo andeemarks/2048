@@ -1,6 +1,7 @@
 import Board from "./board";
 import BoardControl from "./board-control";
 import { RowTiltObserver } from "./row-tilt-observer";
+import { ScoreObserver, NullScoreObserver } from "./score-observer";
 
 enum Direction {
   Up = "up",
@@ -21,6 +22,7 @@ class Game implements RowTiltObserver {
   private _board: Board;
   private _score: number = 0;
   private _hasSlid: boolean = false;
+  private _scoreObserver: ScoreObserver = new NullScoreObserver();
 
   constructor(board: Board = new Board()) {
     if (board.width() == 0 || board.width() != board.height()) {
@@ -32,6 +34,7 @@ class Game implements RowTiltObserver {
 
   collapsed(value: number): void {
     this._score += value;
+    this._scoreObserver.scoreIncreasedBy(value);
   }
 
   slid(): void {
@@ -53,12 +56,13 @@ class Game implements RowTiltObserver {
       .map((a) => a.value);
   }
 
-  start(): Board {
+  start(scoreObserver: ScoreObserver = new NullScoreObserver()): Board {
     let startRows = this.shuffle([0, 1, 2, 3]);
     let startColumns = this.shuffle([0, 1, 2, 3]);
 
     this._board.populate(startColumns[0], startRows[0], 2);
     this._board.populate(startColumns[1], startRows[1], 2);
+    this._scoreObserver = scoreObserver;
 
     return this._board;
   }
@@ -71,7 +75,11 @@ class Game implements RowTiltObserver {
     let emptySpaces = board.findEmptySpaces();
 
     let emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
-    board.populate(emptySpace.column, emptySpace.row, this.choosePopulationValue());
+    board.populate(
+      emptySpace.column,
+      emptySpace.row,
+      this.choosePopulationValue()
+    );
 
     return board;
   }
