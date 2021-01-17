@@ -25,6 +25,12 @@ function show(board: string) {
   );
 }
 
+enum EndReason {
+  PlayerQuit,
+  BoardFull,
+  BoardComplete,
+}
+
 function setup() {
   rl = readline.createInterface({
     input: process.stdin,
@@ -44,16 +50,6 @@ function setup() {
   show(display.format(board));
 }
 
-function endOnPlayerExit() {
-  console.log();
-  console.log(
-    chalk.red(
-      figlet.textSync("Thanks for playing", { horizontalLayout: "full" })
-    )
-  );
-  process.exit(0);
-}
-
 function updateBoard() {
   clear();
   console.log(
@@ -64,18 +60,23 @@ function updateBoard() {
   show(display.format(board));
 }
 
+function endOnPlayerExit() {
+  console.log(
+    chalk.red(
+      figlet.textSync("Thanks for playing", { horizontalLayout: "full" })
+    )
+  );
+}
+
 function endOnFullBoard() {
-  console.log();
   console.log(
     chalk.red(
       figlet.textSync("Game over - board full", { horizontalLayout: "full" })
     )
   );
-  process.exit(0);
 }
 
 function endOnCompleteBoard() {
-  console.log();
   console.log(
     chalk.green.bold(
       figlet.textSync("Congratulations - you WON!!!", {
@@ -83,13 +84,28 @@ function endOnCompleteBoard() {
       })
     )
   );
+}
+
+function end(reason: EndReason) {
+  console.log();
+  switch (reason) {
+    case EndReason.PlayerQuit:
+      endOnPlayerExit();
+      break;
+    case EndReason.BoardFull:
+      endOnFullBoard();
+      break;
+    case EndReason.BoardComplete:
+      endOnCompleteBoard();
+      break;
+  }
   process.exit(0);
 }
 
 function gameLoop() {
   process.stdin.on("keypress", (_, key) => {
     if (key.ctrl && key.name === "c") {
-      endOnPlayerExit();
+      end(EndReason.PlayerQuit);
     } else {
       try {
         board = game.tilt(board, key.name.toLowerCase());
@@ -99,10 +115,10 @@ function gameLoop() {
       updateBoard();
 
       if (board.isFull()) {
-        endOnFullBoard();
+        end(EndReason.BoardFull);
       }
       if (board.isComplete()) {
-        endOnCompleteBoard();
+        end(EndReason.BoardComplete);
       }
     }
   });

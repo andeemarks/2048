@@ -20,7 +20,7 @@ class InvalidTiltDirectionError extends Error {
 class Game implements RowTiltObserver {
   private _board: Board;
   private _score: number = 0;
-  private hasSlid: boolean = false;
+  private _hasSlid: boolean = false;
 
   constructor(board: Board = new Board()) {
     if (board.width() == 0 || board.width() != board.height()) {
@@ -35,7 +35,7 @@ class Game implements RowTiltObserver {
   }
 
   slid(): void {
-    this.hasSlid = true;
+    this._hasSlid = true;
   }
 
   board(): Board {
@@ -70,10 +70,6 @@ class Game implements RowTiltObserver {
   private populateEmptySpace(board: Board): Board {
     let emptySpaces = board.findEmptySpaces();
 
-    if (emptySpaces.length == 0) {
-      throw new Error(`Cannot find empty spaces - board looks full.`);
-    }
-
     let emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
     board.populate(emptySpace.column, emptySpace.row, this.choosePopulationValue());
 
@@ -86,7 +82,7 @@ class Game implements RowTiltObserver {
 
   tilt(board: Board, direction: Direction): Board {
     var tiltedBoard: Board;
-    this.hasSlid = false;
+    this._hasSlid = false;
     switch (direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(board, this);
@@ -104,7 +100,7 @@ class Game implements RowTiltObserver {
         throw new InvalidTiltDirectionError(direction);
     }
 
-    return this.hasSlid ? this.populateEmptySpace(tiltedBoard) : tiltedBoard;
+    return this._hasSlid ? this.populateEmptySpace(tiltedBoard) : tiltedBoard;
   }
 }
 

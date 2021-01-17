@@ -13,7 +13,8 @@ module.exports = {
     '.d.ts$',
     '<rootDir>/test/fixtures',
     '<rootDir>/test/helpers',
-    '__mocks__'
+    '__mocks__',
+    '/lib'
   ],
   transform: {
     '^.+\\.[t]sx?$': 'ts-jest',

@@ -133,17 +133,5 @@ describe("2048 Game", () => {
 
       expect(newBoard).toEqual(board);
     });
-
-    it("errors when tilting/populating a completely full board", () => {
-      let fullBoard = new Board([
-        [2, 4],
-        [8, 16],
-      ]);
-      let game = new Game(fullBoard);
-
-      expect(() => {
-        game.tilt(fullBoard, Direction.Left);
-      }).toThrowError();
-    });
   });
 });
