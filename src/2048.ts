@@ -14,29 +14,28 @@ let board: Board;
 let game: typeof Game;
 let display: Display;
 let scoreObserver = new LevelUpScoreObserver();
+let normalBoardBoxProps: boxen.Options = {
+  padding: 0,
+  margin: 0,
+  borderStyle: "round",
+  borderColor: "white",
+  backgroundColor: "#222222",
+};
+
+let levelUpBoardBoxProps: boxen.Options = {
+  padding: 0,
+  margin: 0,
+  borderStyle: "doubleSingle",
+  borderColor: "yellowBright",
+  backgroundColor: "#222222",
+};
 
 function show(board: string) {
   if (scoreObserver.hasNewScoreLevel()) {
     scoreObserver.resetNetScoreLevel();
-    console.log(
-      boxen(board, {
-        padding: 0,
-        margin: 0,
-        borderStyle: "round",
-        borderColor: "yellow",
-        backgroundColor: "#222222",
-      })
-    );
+    console.log(boxen(board, levelUpBoardBoxProps));
   } else {
-    console.log(
-      boxen(board, {
-        padding: 0,
-        margin: 0,
-        borderStyle: "round",
-        borderColor: "white",
-        backgroundColor: "#222222",
-      })
-    );
+    console.log(boxen(board, normalBoardBoxProps));
   }
 }
 
