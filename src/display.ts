@@ -2,9 +2,7 @@ import chalk from "chalk";
 import Board from "./board";
 
 class Display {
-  constructor() {}
-
-  pad(value: number) {
+  pad(value: number): number | string {
     if (value <= 9) {
       return `  ${value} `;
     }
@@ -18,11 +16,11 @@ class Display {
   }
 
   format(board: Board): string {
-    let spaces = board.spaces();
-    let displaySpace: string = "";
+    const spaces = board.spaces();
+    let displaySpace = "";
     for (let row = board.height() - 1; row >= 0; row--) {
       for (let column = 0; column < board.rowAtPosition(row).length; column++) {
-        let space = spaces[row][column];
+        const space = spaces[row][column];
         switch (space) {
           case 0:
             displaySpace += chalk.bgBlack("    ");

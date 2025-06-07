@@ -5,7 +5,7 @@ import {RowTiltObserver, NullRowTiltObserver} from "./row-tilt-observer";
 
 class BoardControl {
   private static tilt(board: Board, observer: RowTiltObserver): Board {
-    let tiltedBoard: number[][] = [];
+    const tiltedBoard: number[][] = [];
     for (let row = 0; row < board.height(); row++) {
       tiltedBoard[row] = new RowControl(board.rowAtPosition(row)).tilt(
         observer
@@ -19,7 +19,7 @@ class BoardControl {
     board: Board,
     observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
-    let tiltedBoard = this.tilt(board, observer);
+    const tiltedBoard = this.tilt(board, observer);
 
     return tiltedBoard;
   }
@@ -28,9 +28,9 @@ class BoardControl {
     board: Board,
     observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
-    let rotatedBoard = BoardRotator.rotate90Degrees(board, 2);
+    const rotatedBoard = BoardRotator.rotate90Degrees(board, 2);
 
-    let tiltedBoard = this.tilt(rotatedBoard, observer);
+    const tiltedBoard = this.tilt(rotatedBoard, observer);
 
     return BoardRotator.rotate90Degrees(tiltedBoard, 2);
   }
@@ -39,9 +39,9 @@ class BoardControl {
     board: Board,
     observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
-    let rotatedBoard = BoardRotator.rotate90Degrees(board, 3);
+    const rotatedBoard = BoardRotator.rotate90Degrees(board, 3);
 
-    let tiltedBoard = this.tilt(rotatedBoard, observer);
+    const tiltedBoard = this.tilt(rotatedBoard, observer);
 
     return BoardRotator.rotate90Degrees(tiltedBoard);
   }
@@ -50,9 +50,9 @@ class BoardControl {
     board: Board,
     observer: RowTiltObserver = new NullRowTiltObserver()
   ): Board {
-    let rotatedBoard = BoardRotator.rotate90Degrees(board);
+    const rotatedBoard = BoardRotator.rotate90Degrees(board);
 
-    let tiltedBoard = this.tilt(rotatedBoard, observer);
+    const tiltedBoard = this.tilt(rotatedBoard, observer);
 
     return BoardRotator.rotate90Degrees(tiltedBoard, 3);
   }

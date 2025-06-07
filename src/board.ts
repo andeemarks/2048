@@ -36,11 +36,11 @@ class Board {
     return ([] as number[]).concat(...this._board);
   }
 
-  populate(column: number, row: number, value: number) {
+  populate(column: number, row: number, value: number): void {
     this._board[row][column] = value;
   }
 
-  toString(): String {
+  toString(): string {
     let result = "";
     for (let i = this._board.length; i > 0; i--) {
       result = result + this._board[i - 1].join("") + "\n";
@@ -56,16 +56,16 @@ class Board {
     return this._board[position];
   }
 
-  print() {
+  print(): void {
     console.log(this.toString());
   }
 
   findEmptySpaces(): { row: number; column: number }[] {
-    let emptySpaces = [];
-    let spaces = this.spaces();
+    const emptySpaces = [];
+    const spaces = this.spaces();
     for (let row = 0; row < this.height(); row++) {
       for (let column = 0; column < this.rowAtPosition(row).length; column++) {
-        let space = spaces[row][column];
+        const space = spaces[row][column];
         if (space == 0) {
           emptySpaces.push({ row: row, column: column });
         }

@@ -4,8 +4,13 @@ interface RowTiltObserver {
 }
 
 class NullRowTiltObserver implements RowTiltObserver {
-  slid(): void {}
-  collapsed(_value: number) {}
+  slid(): void { 
+    // intentionally blank
+  }
+
+  collapsed(_value: number): void {
+    // intentionally blank
+  }
 }
 
 export type { RowTiltObserver };

@@ -8,7 +8,7 @@ class BoardRotator {
 
     let spaces = board.spaces();
 
-    for (var i = 0; i < rotationCount; i++) {
+    for (let i = 0; i < rotationCount; i++) {
       spaces = spaces[0].map((_, index) =>
         spaces.map((row) => row[index]).reverse()
       );

@@ -8,15 +8,15 @@ class RowControl {
   }
 
   slidePopulatedSpaces(observer: RowTiltObserver): number[] {
-    let populatedSpaces = this._row.filter((space: Number) => {
+    const populatedSpaces = this._row.filter((space: number) => {
       return space != 0;
     });
 
-    let slidSpaces: number[] = populatedSpaces
+    const slidSpaces: number[] = populatedSpaces
       .concat([0, 0, 0, 0])
       .slice(0, this._row.length);
 
-    let rowsAreEqual: boolean = slidSpaces.every(
+    const rowsAreEqual: boolean = slidSpaces.every(
       (val, index) => val === this._row[index]
     );
     if (!rowsAreEqual) {
@@ -27,7 +27,7 @@ class RowControl {
   }
 
   tilt(observer: RowTiltObserver = new NullRowTiltObserver()): number[] {
-    let slidSpaces = this.slidePopulatedSpaces(observer);
+    const slidSpaces = this.slidePopulatedSpaces(observer);
 
     return this.sumEqualNeighbours(slidSpaces, observer);
   }
@@ -36,13 +36,13 @@ class RowControl {
     return space != 0;
   }
 
-  private areNeighboursEqual(space1: number, space2: number) {
+  private areNeighboursEqual(space1: number, space2: number): boolean {
     return space1 == space2;
   }
 
   sumEqualNeighbours(spaces: number[], observer: RowTiltObserver): number[] {
-    let rowLength = spaces.length;
-    for (var i = 0; this.isSpacePopulated(spaces[i]) && i < rowLength; i++) {
+    const rowLength = spaces.length;
+    for (let i = 0; this.isSpacePopulated(spaces[i]) && i < rowLength; i++) {
       if (this.areNeighboursEqual(spaces[i], spaces[i + 1])) {
         spaces[i] = 2 * spaces[i];
         observer.collapsed(spaces[i]);

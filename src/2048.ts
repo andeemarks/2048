@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
+import chalk from "chalk";
+import clear from "clear";
+import figlet from "figlet";
 import boxen from "boxen";
-const { Game } = require("./game");
+import { Game } from "./game";
 import Display from "./display";
 import Board from "./board";
 import readline from "readline";
@@ -11,10 +11,10 @@ import { LevelUpScoreObserver } from "./score-observer";
 
 let rl: readline.Interface;
 let board: Board;
-let game: typeof Game;
+let game: Game;
 let display: Display;
-let scoreObserver = new LevelUpScoreObserver();
-let normalBoardBoxProps: boxen.Options = {
+const scoreObserver = new LevelUpScoreObserver();
+const normalBoardBoxProps: boxen.Options = {
   padding: 0,
   margin: 0,
   borderStyle: "round",
@@ -22,7 +22,7 @@ let normalBoardBoxProps: boxen.Options = {
   backgroundColor: "#222222",
 };
 
-let levelUpBoardBoxProps: boxen.Options = {
+const levelUpBoardBoxProps: boxen.Options = {
   padding: 0,
   margin: 0,
   borderStyle: "doubleSingle",
@@ -30,7 +30,7 @@ let levelUpBoardBoxProps: boxen.Options = {
   backgroundColor: "#222222",
 };
 
-function show(board: string) {
+function show(board: string): void {
   if (scoreObserver.hasNewScoreLevel()) {
     scoreObserver.resetNetScoreLevel();
     console.log(boxen(board, levelUpBoardBoxProps));
@@ -45,7 +45,7 @@ enum EndReason {
   BoardComplete,
 }
 
-function setup() {
+function setup(): void {
   rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -65,7 +65,7 @@ function setup() {
   show(display.format(board));
 }
 
-function updateBoard() {
+function updateBoard(): void {
   clear();
   console.log(
     chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
@@ -75,7 +75,7 @@ function updateBoard() {
   show(display.format(board));
 }
 
-function endOnPlayerExit() {
+function endOnPlayerExit(): void {
   console.log(
     chalk.red(
       figlet.textSync("Thanks for playing", { horizontalLayout: "full" })
@@ -83,7 +83,7 @@ function endOnPlayerExit() {
   );
 }
 
-function endOnFullBoard() {
+function endOnFullBoard(): void {
   console.log(
     chalk.red(
       figlet.textSync("Game over - board full", { horizontalLayout: "full" })
@@ -91,7 +91,7 @@ function endOnFullBoard() {
   );
 }
 
-function endOnCompleteBoard() {
+function endOnCompleteBoard(): void {
   console.log(
     chalk.green.bold(
       figlet.textSync("Congratulations - you WON!!!", {
@@ -101,7 +101,7 @@ function endOnCompleteBoard() {
   );
 }
 
-function end(reason: EndReason) {
+function end(reason: EndReason): void {
   console.log();
   switch (reason) {
     case EndReason.PlayerQuit:
@@ -117,7 +117,7 @@ function end(reason: EndReason) {
   process.exit(0);
 }
 
-function gameLoop() {
+function gameLoop(): void {
   process.stdin.on("keypress", (_, key) => {
     if (key.ctrl && key.name === "c") {
       end(EndReason.PlayerQuit);

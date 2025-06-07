@@ -11,7 +11,7 @@ enum Direction {
 }
 
 class InvalidTiltDirectionError extends Error {
-  constructor(message: any = "") {
+  constructor(message = "") {
     super(message);
     this.name = this.constructor.name;
     Error.captureStackTrace(this, this.constructor);
@@ -20,8 +20,8 @@ class InvalidTiltDirectionError extends Error {
 
 class Game implements RowTiltObserver {
   private _board: Board;
-  private _score: number = 0;
-  private _hasSlid: boolean = false;
+  private _score = 0;
+  private _hasSlid = false;
   private _scoreObserver: ScoreObserver = new NullScoreObserver();
 
   constructor(board: Board = new Board()) {
@@ -57,8 +57,8 @@ class Game implements RowTiltObserver {
   }
 
   start(scoreObserver: ScoreObserver = new NullScoreObserver()): Board {
-    let startRows = this.shuffle([0, 1, 2, 3]);
-    let startColumns = this.shuffle([0, 1, 2, 3]);
+    const startRows = this.shuffle([0, 1, 2, 3]);
+    const startColumns = this.shuffle([0, 1, 2, 3]);
 
     this._board.populate(startColumns[0], startRows[0], 2);
     this._board.populate(startColumns[1], startRows[1], 2);
@@ -72,9 +72,9 @@ class Game implements RowTiltObserver {
   }
 
   private populateEmptySpace(board: Board): Board {
-    let emptySpaces = board.findEmptySpaces();
+    const emptySpaces = board.findEmptySpaces();
 
-    let emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
+    const emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
     board.populate(
       emptySpace.column,
       emptySpace.row,
@@ -89,7 +89,7 @@ class Game implements RowTiltObserver {
   }
 
   tilt(board: Board, direction: Direction): Board {
-    var tiltedBoard: Board;
+    let tiltedBoard: Board;
     this._hasSlid = false;
     switch (direction) {
       case Direction.Left:

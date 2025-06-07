@@ -3,7 +3,9 @@ interface ScoreObserver {
 }
 
 class NullScoreObserver implements ScoreObserver {
-  scoreIncreasedBy(_score: number): void {}
+  scoreIncreasedBy(_score: number): void {
+    // intentionally blank
+  }
 }
 
 class LevelUpScoreObserver implements ScoreObserver {
