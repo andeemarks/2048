@@ -180,7 +180,7 @@ classDiagram
         +isFull(): boolean
         +isComplete(): boolean
         +flatten(): number[]
-        +populate(column: number, row: number, value: number): Board
+        +with_value(column: number, row: number, value: number): Board
         +toString(): string
         +rowAtPosition(position: number): number[]
         +print(): void
@@ -344,7 +344,7 @@ classDiagram
     Main2048 --> KeyPress : handles
     Main2048 --> EndReason : uses
 
-    %% Notes about immutability
-    note for Board "populate() now returns new Board instance\n(immutable operation)"
-    note for Game "Uses immutable Board operations\nfor thread-safe state management"
+    %% Notes about the fluent interface
+    note for Board "with_value() returns new Board instance\nEnables fluent chaining:\nboard.with_value(0,0,2).with_value(1,1,4)"
+    note for Game "Uses immutable Board operations\nwith fluent interface design"
 ```
