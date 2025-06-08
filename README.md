@@ -37,114 +37,136 @@ Ran all test suites.
 ```mermaid
 sequenceDiagram
     participant User
-    participant Main as 2048.ts (Main)
+    participant Main as 2048.ts
+    participant CLI as CLIApplication
+    participant Controller as GameController
+    participant Input as InputHandler
+    participant Renderer as UIRenderer
     participant Game
-    participant BoardControl
-    participant BoardRotator
-    participant RowControl
     participant Board
     participant Display
-    participant ScoreObserver
+    participant ScoreObs as LevelUpScoreObserver
 
-    Note over User, ScoreObserver: Game Initialization
-    User->>Main: Start Game
-    Main->>Game: new Game()
-    Main->>Game: start(scoreObserver)
-    Game->>Board: populate(col, row, 2) x2
-    Game-->>Main: return board
-    Main->>Display: new Display()
-    Main->>Board: spaces()
-    Board-->>Main: number[][]
-    Main->>Display: format(board)
-    Display-->>Main: formatted string
-    Main->>Main: show(boardString)
+    Note over User, ScoreObs: Application Startup & Initialization
+    User->>Main: Start Application
+    Main->>CLI: new CLIApplication()
+    
+    activate CLI
+    CLI->>Controller: new GameController()
+    CLI->>Input: new InputHandler(controller)
+    CLI->>Renderer: new UIRenderer()
+    CLI->>Controller: setObserver(this)
+    
+    Main->>CLI: run()
+    CLI->>Renderer: showInitialScreen()
+    Renderer->>Renderer: clear(), figlet "2048-ts"
+    
+    CLI->>Controller: start()
+    activate Controller
+    Controller->>Game: new Game()
+    Controller->>ScoreObs: new LevelUpScoreObserver()
+    Controller->>Game: start(scoreObserver)
+    Game->>Board: with_value(col, row, 2) x2
+    Game-->>Controller: return board
+    Controller->>Controller: notifyBoardUpdate()
+    Controller->>CLI: onBoardUpdate(board, score)
+    deactivate Controller
+    
+    CLI->>Controller: hasNewScoreLevel()
+    Controller-->>CLI: false
+    CLI->>Renderer: showBoard(board, score, false)
+    
+    activate Renderer
+    Renderer->>Display: new Display()
+    Renderer->>Display: format(board)
+    Display-->>Renderer: formatted string
+    Renderer->>Renderer: figlet, chalk, boxen styling
+    deactivate Renderer
+    
+    CLI->>Input: setupKeyboardInput()
+    Input->>Input: readline setup, keypress events
+    deactivate CLI
 
-    Note over User, ScoreObserver: Game Loop - Tilt Operation
-    User->>Main: keypress (e.g., "left")
-    Main->>Game: tilt(board, "left")
+    Note over User, ScoreObs: Game Loop - User Input & State Updates
+    User->>Input: keypress (e.g., "left")
+    
+    activate Input
+    Input->>Input: handleKeyPress(key)
+    Input->>Controller: handleMove("left")
+    deactivate Input
+    
+    activate Controller
+    Controller->>Game: tilt(board, "left")
     
     activate Game
-    Game->>Game: _hasSlid = false
-    Game->>BoardControl: tiltLeft(board, this)
-    
-    activate BoardControl
-    BoardControl->>BoardControl: tilt(board, observer)
-    
-    loop for each row
-        BoardControl->>Board: rowAtPosition(row)
-        Board-->>BoardControl: number[]
-        BoardControl->>RowControl: new RowControl(row)
-        BoardControl->>RowControl: tilt(observer)
-        
-        activate RowControl
-        RowControl->>RowControl: slidePopulatedSpaces(observer)
-        
-        alt if spaces moved
-            RowControl->>Game: slid()
-            Game->>Game: _hasSlid = true
-        end
-        
-        RowControl->>RowControl: sumEqualNeighbours(spaces, observer)
-        
-        loop for each collapsible pair
-            RowControl->>Game: collapsed(value)
-            Game->>Game: _score += value
-            Game->>ScoreObserver: scoreIncreasedBy(value)
-            
-            alt if new score level
-                ScoreObserver->>ScoreObserver: _newScoreLevel = true
-            end
-        end
-        
-        RowControl-->>BoardControl: tilted row
-        deactivate RowControl
-    end
-    
-    BoardControl->>Board: new Board(tiltedRows)
-    BoardControl-->>Game: tiltedBoard
-    deactivate BoardControl
-    
-    Game->>Game: populateEmptySpace(tiltedBoard)
-    Game->>Board: findEmptySpaces()
-    Board-->>Game: emptySpaces[]
-    Game->>Game: getRandomInt(emptySpaces.length)
-    Game->>Game: choosePopulationValue()
-    Game->>Board: populate(col, row, value)
-    
-    Game-->>Main: newBoard
+    Game->>Game: BoardControl.tiltLeft(board, this)
+    Note over Game: Row processing & tile merging
+    Game->>ScoreObs: scoreIncreasedBy(value) [if tiles merged]
+    ScoreObs->>ScoreObs: _newScoreLevel = true [if new high score]
+    Game->>Board: with_value(col, row, newTile)
+    Game-->>Controller: return new board
     deactivate Game
     
-    Main->>Main: updateBoard()
-    Main->>Board: spaces()
-    Board-->>Main: number[][]
-    Main->>Display: format(board)
-    Display-->>Main: formatted string
+    Controller->>Controller: notifyBoardUpdate()
+    Controller->>CLI: onBoardUpdate(board, score)
     
-    alt if scoreObserver has new level
-        Main->>ScoreObserver: hasNewScoreLevel()
-        ScoreObserver-->>Main: true
-        Main->>ScoreObserver: resetNetScoreLevel()
-        Main->>Main: show with level up styling
-    else
-        Main->>Main: show with normal styling
+    Controller->>Controller: checkGameEnd()
+    alt board not full and not complete
+        Controller-->>Input: true (continue)
+    else game ended
+        Controller->>CLI: onGameEnd(reason)
+        CLI->>Renderer: showGameEnd(reason)
+        Renderer->>Renderer: figlet end message, process.exit()
+    end
+    deactivate Controller
+    
+    activate CLI
+    CLI->>Controller: hasNewScoreLevel()
+    Controller->>ScoreObs: hasNewScoreLevel()
+    ScoreObs-->>Controller: true/false
+    Controller-->>CLI: boolean
+    
+    CLI->>Renderer: showBoard(board, score, hasNewScoreLevel)
+    
+    activate Renderer
+    Renderer->>Display: format(board)
+    Display-->>Renderer: formatted string
+    
+    alt hasNewScoreLevel
+        Renderer->>Renderer: boxen with levelUp styling
+        CLI->>Controller: resetScoreLevel()
+        Controller->>ScoreObs: resetNetScoreLevel()
+    else normal display
+        Renderer->>Renderer: boxen with normal styling
+    end
+    deactivate Renderer
+    
+    deactivate CLI
+
+    Note over User, ScoreObs: Error Handling
+    User->>Input: invalid keypress
+    Input->>Controller: handleMove("invalid")
+    Controller->>Game: tilt(board, "invalid")
+    Game-->>Controller: throws InvalidTiltDirectionError
+    Controller->>Controller: catch error, log message
+    Controller-->>Input: true (continue)
+
+    Note over User, ScoreObs: Game End Scenarios  
+    alt Board Full
+        Controller->>Board: isFull()
+        Board-->>Controller: true
+        Controller->>CLI: onGameEnd(BoardFull)
+    else 2048 Reached
+        Controller->>Board: isComplete()
+        Board-->>Controller: true
+        Controller->>CLI: onGameEnd(BoardComplete)  
+    else User Quit (Ctrl+C)
+        Input->>Controller: quit()
+        Controller->>CLI: onGameEnd(PlayerQuit)
     end
     
-    Note over User, ScoreObserver: Game State Checks
-    Main->>Board: isFull()
-    Board-->>Main: boolean
-    
-    alt if board full
-        Main->>Main: end(BoardFull)
-    else
-        Main->>Board: isComplete()
-        Board-->>Main: boolean
-        
-        alt if 2048 reached
-            Main->>Main: end(BoardComplete)
-        else
-            Note over User, Main: Continue game loop
-        end
-    end
+    CLI->>Renderer: showGameEnd(reason)
+    Renderer->>Renderer: display appropriate message, exit
 ```
 
 ## Class Diagram
@@ -152,7 +174,71 @@ sequenceDiagram
 ```mermaid
 
 classDiagram
-    %% Core Game Classes
+    %% CLI Application Layer
+    class CLIApplication {
+        -controller: GameController
+        -inputHandler: InputHandler
+        -renderer: UIRenderer
+        +constructor()
+        +run(): void
+        +onBoardUpdate(board: Board, score: number): void
+        +onGameEnd(reason: EndReason): void
+    }
+
+    class GameController {
+        -game: Game
+        -board: Board
+        -scoreObserver: LevelUpScoreObserver
+        -observer?: GameStateObserver
+        +constructor()
+        +start(): void
+        +handleMove(direction: string): boolean
+        +quit(): void
+        +setObserver(observer: GameStateObserver): void
+        +hasNewScoreLevel(): boolean
+        +resetScoreLevel(): void
+        -checkGameEnd(): EndReason | null
+        -notifyBoardUpdate(): void
+    }
+
+    class InputHandler {
+        -controller: GameController
+        +constructor(controller: GameController)
+        +setupKeyboardInput(): void
+        -handleKeyPress(key: KeyPress): void
+    }
+
+    class UIRenderer {
+        -display: Display
+        -normalBoardBoxProps: boxen.Options
+        -levelUpBoardBoxProps: boxen.Options
+        +constructor()
+        +showInitialScreen(): void
+        +showBoard(board: Board, score: number, hasNewScoreLevel: boolean): void
+        +showGameEnd(reason: EndReason): void
+    }
+
+    %% CLI Interfaces and Types
+    class GameStateObserver {
+        <<interface>>
+        +onBoardUpdate(board: Board, score: number): void
+        +onGameEnd(reason: EndReason): void
+    }
+
+    class EndReason {
+        <<enumeration>>
+        PlayerQuit
+        BoardFull
+        BoardComplete
+    }
+
+    class KeyPress {
+        <<type>>
+        +ctrl: boolean
+        +name: string
+    }
+
+    %% Core Game Classes (Unchanged)
     class Game {
         -_board: Board
         -_score: number
@@ -278,34 +364,32 @@ classDiagram
         +column: number
     }
 
-    class KeyPress {
-        <<type>>
-        +ctrl: boolean
-        +name: string
-    }
-
-    %% Main Application Components
+    %% Main Application Entry Point
     class Main2048 {
         <<module>>
-        +board: Board
-        +game: Game
-        +display: Display
-        +scoreObserver: LevelUpScoreObserver
-        +setup(): void
-        +updateBoard(): void
-        +gameLoop(): void
-        +show(board: string): void
-        +end(reason: EndReason): void
+        +main(): void
     }
 
-    class EndReason {
-        <<enumeration>>
-        PlayerQuit
-        BoardFull
-        BoardComplete
-    }
+    %% CLI Layer Relationships
+    CLIApplication --> GameController : orchestrates
+    CLIApplication --> InputHandler : creates & uses
+    CLIApplication --> UIRenderer : creates & uses
+    CLIApplication ..|> GameStateObserver : implements
 
-    %% Relationships
+    GameController --> Game : manages
+    GameController --> Board : tracks state
+    GameController --> LevelUpScoreObserver : uses
+    GameController --> GameStateObserver : notifies
+    GameController --> EndReason : uses
+
+    InputHandler --> GameController : delegates to
+    InputHandler --> KeyPress : handles
+
+    UIRenderer --> Display : uses
+    UIRenderer --> Board : renders
+    UIRenderer --> EndReason : handles
+
+    %% Core Game Relationships (Preserved)
     Game --> Board : manages
     Game --> ScoreObserver : notifies
     Game ..|> RowTiltObserver : implements
@@ -337,14 +421,12 @@ classDiagram
     InvalidTiltDirectionError --|> Error : extends
 
     %% Main application relationships
-    Main2048 --> Game : creates & uses
-    Main2048 --> Display : creates & uses
-    Main2048 --> Board : displays
-    Main2048 --> LevelUpScoreObserver : creates & uses
-    Main2048 --> KeyPress : handles
-    Main2048 --> EndReason : uses
+    Main2048 --> CLIApplication : creates & runs
 
-    %% Notes about the fluent interface
-    note for Board "with_value() returns new Board instance\nEnables fluent chaining:\nboard.with_value(0,0,2).with_value(1,1,4)"
-    note for Game "Uses immutable Board operations\nwith fluent interface design"
+    %% Notes about the architecture
+    note for CLIApplication "Orchestrates CLI components\nImplements GameStateObserver\nNo business logic"
+    note for GameController "Pure game state management\nObserver pattern coordinator\nSingle responsibility"
+    note for UIRenderer "All display logic isolated\nChalk, figlet, boxen styling\nNo game logic"
+    note for InputHandler "Keyboard input processing\nValidation and delegation\nNo game state"
+    
 ```
