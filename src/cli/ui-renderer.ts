@@ -5,6 +5,20 @@ import boxen from "boxen";
 import Board from "../board";
 import { EndReason } from "./game-controller";
 
+const colorMap: Map<number, (value: number) => string> = new Map();
+colorMap.set(0, (_value: number) => chalk.bgBlack("    "));
+colorMap.set(2, (value: number) => chalk.black.bgWhite(`  ${value.toString()} `));
+colorMap.set(4, (value: number) => chalk.black.bgWhiteBright(`  ${value.toString()} `));
+colorMap.set(8, (value: number) => chalk.black.bgCyanBright(`  ${value.toString()} `));
+colorMap.set(16, (value: number) => chalk.black.bgCyan(` ${value.toString()} `));
+colorMap.set(32, (value: number) => chalk.black.bgBlueBright(` ${value.toString()} `));
+colorMap.set(64, (value: number) => chalk.black.bgBlue(` ${value.toString()} `));
+colorMap.set(128, (value: number) => chalk.black.bgMagentaBright(` ${value.toString()} `));
+colorMap.set(256, (value: number) => chalk.whiteBright.bgMagenta(` ${value.toString()}`));
+colorMap.set(512, (value: number) => chalk.black.bgYellow(` ${value.toString()}`));
+colorMap.set(1024, (value: number) => chalk.black.bgYellowBright(` ${value.toString()}`));
+colorMap.set(2048, (value: number) => chalk.whiteBright.bgRedBright(` ${value.toString()}`));
+
 export class UIRenderer {
   private normalBoardBoxProps: boxen.Options;
   private levelUpBoardBoxProps: boxen.Options;
@@ -35,30 +49,15 @@ export class UIRenderer {
     clear();
     console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" })));
     console.log(chalk.bgWhiteBright.black(`Score: ${score.toString()}`));
-
-    const formattedBoard = this.format(board);
-    
-    if (hasNewScoreLevel) {
-      console.log(boxen(formattedBoard, this.levelUpBoardBoxProps));
-    } else {
-      console.log(boxen(formattedBoard, this.normalBoardBoxProps));
-    }
+    console.log(boxen(this.format(board), hasNewScoreLevel ? this.levelUpBoardBoxProps : this.normalBoardBoxProps));
   }
 
   redLog(message: string): void {
-    console.log(
-      chalk.red(
-        figlet.textSync(message, { horizontalLayout: "full" })
-      )
-    );
+    console.log( chalk.red( figlet.textSync(message, { horizontalLayout: "full" }) ) );
   }
 
   greenLog(message: string): void {
-    console.log(
-      chalk.green(
-        figlet.textSync(message, { horizontalLayout: "full" })
-      )
-    );
+    console.log( chalk.green( figlet.textSync(message, { horizontalLayout: "full" }) ) );
   }
 
   showGameEnd(reason: EndReason): void {
@@ -76,19 +75,6 @@ export class UIRenderer {
     }
     process.exit(0);
   }
-  
-  pad(value: number): number | string {
-    if (value <= 9) {
-      return `  ${value.toString()} `;
-    }
-    if (value <= 99) {
-      return ` ${value.toString()} `;
-    }
-    if (value <= 999) {
-      return ` ${value.toString()}`;
-    }
-    return value;
-  }
 
   format(board: Board): string {
     const spaces = board.spaces();
@@ -96,44 +82,11 @@ export class UIRenderer {
     for (let row = board.height() - 1; row >= 0; row--) {
       for (let column = 0; column < board.rowAtPosition(row).length; column++) {
         const space = spaces[row][column];
-        switch (space) {
-          case 0:
-            displaySpace += chalk.bgBlack("    ");
-            break;
-          case 2:
-            displaySpace += chalk.black.bgWhite(this.pad(space));
-            break;
-          case 4:
-            displaySpace += chalk.black.bgWhiteBright(this.pad(space));
-            break;
-          case 8:
-            displaySpace += chalk.black.bgCyanBright(this.pad(space));
-            break;
-          case 16:
-            displaySpace += chalk.black.bgCyan(this.pad(space));
-            break;
-          case 32:
-            displaySpace += chalk.black.bgBlueBright(this.pad(space));
-            break;
-          case 64:
-            displaySpace += chalk.black.bgBlue(this.pad(space));
-            break;
-          case 128:
-            displaySpace += chalk.black.bgMagentaBright(this.pad(space));
-            break;
-          case 256:
-            displaySpace += chalk.whiteBright.bgMagenta(this.pad(space));
-            break;
-          case 512:
-            displaySpace += chalk.black.bgYellow(this.pad(space));
-            break;
-          case 1024:
-            displaySpace += chalk.black.bgYellowBright(this.pad(space));
-            break;
-          case 2048:
-            displaySpace += chalk.whiteBright.bgRedBright(this.pad(space));
-            break;
+        const colorFunc = colorMap.get(space);
+        if (colorFunc) {
+            displaySpace += colorFunc(space);
         }
+
       }
       displaySpace += "\n";
     }
