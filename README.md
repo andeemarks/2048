@@ -5,6 +5,8 @@ CLI Typescript version of 2048 game
 
 `npm start`
 
+![](/resources/screenshot.png)
+
 ## Testing (including Linting)
 
 ```
