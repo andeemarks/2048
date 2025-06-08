@@ -37,10 +37,9 @@ class Board {
   }
 
   populate(column: number, row: number, value: number): Board {
-    this._board[row][column] = value
-
-    const new_spaces = this._board.map(row => row.slice());
-
+    const new_spaces = this._board.map(row => row.slice()); 
+    new_spaces[row][column] = value; 
+  
     return new Board(new_spaces);
   }
 

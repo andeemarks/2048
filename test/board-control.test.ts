@@ -5,26 +5,26 @@ describe("BoardControl", () => {
   let originalBoard = new Board();
 
   beforeAll(() => {
-    originalBoard.populate(0, 2, 2);
-    originalBoard.populate(1, 2, 4);
-    originalBoard.populate(1, 1, 8);
-    originalBoard.populate(2, 1, 16);
-    originalBoard.populate(2, 3, 32);
-    originalBoard.populate(3, 0, 64);
-    originalBoard.populate(3, 2, 128);
+    originalBoard = originalBoard.populate(0, 2, 2);
+    originalBoard = originalBoard.populate(1, 2, 4);
+    originalBoard = originalBoard.populate(1, 1, 8);
+    originalBoard = originalBoard.populate(2, 1, 16);
+    originalBoard = originalBoard.populate(2, 3, 32);
+    originalBoard = originalBoard.populate(3, 0, 64);
+    originalBoard = originalBoard.populate(3, 2, 128);
   });
 
   it("slides unsupported numbers to the left when tilting left", () => {
     let tiltedBoard = BoardControl.tiltLeft(originalBoard);
 
     let expectedBoard = new Board();
-    expectedBoard.populate(0, 0, 64);
-    expectedBoard.populate(0, 1, 8);
-    expectedBoard.populate(1, 2, 4);
-    expectedBoard.populate(0, 3, 32);
-    expectedBoard.populate(1, 1, 16);
-    expectedBoard.populate(0, 2, 2);
-    expectedBoard.populate(2, 2, 128);
+    expectedBoard = expectedBoard.populate(0, 0, 64);
+    expectedBoard = expectedBoard.populate(0, 1, 8);
+    expectedBoard = expectedBoard.populate(1, 2, 4);
+    expectedBoard = expectedBoard.populate(0, 3, 32);
+    expectedBoard = expectedBoard.populate(1, 1, 16);
+    expectedBoard = expectedBoard.populate(0, 2, 2);
+    expectedBoard = expectedBoard.populate(2, 2, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -33,13 +33,13 @@ describe("BoardControl", () => {
     let tiltedBoard = BoardControl.tiltRight(originalBoard);
 
     let expectedBoard = new Board();
-    expectedBoard.populate(3, 0, 64);
-    expectedBoard.populate(3, 1, 16);
-    expectedBoard.populate(2, 2, 4);
-    expectedBoard.populate(3, 3, 32);
-    expectedBoard.populate(2, 1, 8);
-    expectedBoard.populate(1, 2, 2);
-    expectedBoard.populate(3, 2, 128);
+    expectedBoard = expectedBoard.populate(3, 0, 64);
+    expectedBoard = expectedBoard.populate(3, 1, 16);
+    expectedBoard = expectedBoard.populate(2, 2, 4);
+    expectedBoard = expectedBoard.populate(3, 3, 32);
+    expectedBoard = expectedBoard.populate(2, 1, 8);
+    expectedBoard = expectedBoard.populate(1, 2, 2);
+    expectedBoard = expectedBoard.populate(3, 2, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -48,13 +48,13 @@ describe("BoardControl", () => {
     let tiltedBoard = BoardControl.tiltDown(originalBoard);
 
     let expectedBoard = new Board();
-    expectedBoard.populate(0, 0, 2);
-    expectedBoard.populate(1, 0, 8);
-    expectedBoard.populate(1, 1, 4);
-    expectedBoard.populate(2, 0, 16);
-    expectedBoard.populate(2, 1, 32);
-    expectedBoard.populate(3, 0, 64);
-    expectedBoard.populate(3, 1, 128);
+    expectedBoard = expectedBoard.populate(0, 0, 2);
+    expectedBoard = expectedBoard.populate(1, 0, 8);
+    expectedBoard = expectedBoard.populate(1, 1, 4);
+    expectedBoard = expectedBoard.populate(2, 0, 16);
+    expectedBoard = expectedBoard.populate(2, 1, 32);
+    expectedBoard = expectedBoard.populate(3, 0, 64);
+    expectedBoard = expectedBoard.populate(3, 1, 128);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });
@@ -63,13 +63,13 @@ describe("BoardControl", () => {
     let tiltedBoard = BoardControl.tiltUp(originalBoard);
 
     let expectedBoard = new Board();
-    expectedBoard.populate(0, 3, 2);
-    expectedBoard.populate(1, 3, 4);
-    expectedBoard.populate(1, 2, 8);
-    expectedBoard.populate(2, 3, 32);
-    expectedBoard.populate(2, 2, 16);
-    expectedBoard.populate(3, 3, 128);
-    expectedBoard.populate(3, 2, 64);
+    expectedBoard = expectedBoard.populate(0, 3, 2);
+    expectedBoard = expectedBoard.populate(1, 3, 4);
+    expectedBoard = expectedBoard.populate(1, 2, 8);
+    expectedBoard = expectedBoard.populate(2, 3, 32);
+    expectedBoard = expectedBoard.populate(2, 2, 16);
+    expectedBoard = expectedBoard.populate(3, 3, 128);
+    expectedBoard = expectedBoard.populate(3, 2, 64);
 
     expect(tiltedBoard).toEqual(expectedBoard);
   });

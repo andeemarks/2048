@@ -73,15 +73,9 @@ class Game implements RowTiltObserver {
 
   private populateEmptySpace(board: Board): Board {
     const emptySpaces = board.findEmptySpaces();
-
     const emptySpace = emptySpaces[this.getRandomInt(emptySpaces.length)];
-    board.populate(
-      emptySpace.column,
-      emptySpace.row,
-      this.choosePopulationValue()
-    );
 
-    return board;
+    return board.populate( emptySpace.column, emptySpace.row, this.choosePopulationValue() );
   }
 
   choosePopulationValue(): number {
