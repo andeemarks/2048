@@ -36,7 +36,7 @@ class Board {
     return ([] as number[]).concat(...this._board);
   }
 
-  populate(column: number, row: number, value: number): Board {
+  with_value(column: number, row: number, value: number): Board {
     const new_spaces = this._board.map(row => row.slice()); 
     new_spaces[row][column] = value; 
   
