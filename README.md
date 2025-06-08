@@ -180,7 +180,7 @@ classDiagram
         +isFull(): boolean
         +isComplete(): boolean
         +flatten(): number[]
-        +populate(column: number, row: number, value: number): void
+        +populate(column: number, row: number, value: number): Board
         +toString(): string
         +rowAtPosition(position: number): number[]
         +print(): void
@@ -247,66 +247,104 @@ classDiagram
     %% Enums and Error Classes
     class Direction {
         <<enumeration>>
-        Up
-        Down
-        Left
-        Right
+        Up: "up"
+        Down: "down"
+        Left: "left" 
+        Right: "right"
     }
 
     class InvalidTiltDirectionError {
         +constructor(message?: string)
+        +name: string
     }
 
     class Error {
         <<built-in>>
+        +message: string
+        +name: string
+        +stack?: string
+    }
+
+    class RangeError {
+        <<built-in>>
+        +message: string
+        +name: string
     }
 
     %% Type Definitions
     class EmptySpace {
         <<type>>
-        row: number
-        column: number
+        +row: number
+        +column: number
     }
 
     class KeyPress {
         <<type>>
-        ctrl: boolean
-        name: string
+        +ctrl: boolean
+        +name: string
+    }
+
+    %% Main Application Components
+    class Main2048 {
+        <<module>>
+        +board: Board
+        +game: Game
+        +display: Display
+        +scoreObserver: LevelUpScoreObserver
+        +setup(): void
+        +updateBoard(): void
+        +gameLoop(): void
+        +show(board: string): void
+        +end(reason: EndReason): void
+    }
+
+    class EndReason {
+        <<enumeration>>
+        PlayerQuit
+        BoardFull
+        BoardComplete
     }
 
     %% Relationships
-    Game --> Board : has-a
-    Game --> ScoreObserver : uses
+    Game --> Board : manages
+    Game --> ScoreObserver : notifies
     Game ..|> RowTiltObserver : implements
-    Game --> BoardControl : uses
+    Game --> BoardControl : delegates to
     Game --> Direction : uses
     Game --> InvalidTiltDirectionError : throws
 
     BoardControl --> Board : operates on
-    BoardControl --> RowTiltObserver : uses
-    BoardControl --> BoardRotator : uses
-    BoardControl --> RowControl : uses
+    BoardControl --> RowTiltObserver : notifies
+    BoardControl --> BoardRotator : uses for rotation
+    BoardControl --> RowControl : creates
 
-    BoardRotator --> Board : operates on
+    BoardRotator --> Board : transforms
+    BoardRotator --> RangeError : throws
 
-    RowControl --> RowTiltObserver : uses
+    RowControl --> RowTiltObserver : notifies
 
     Display --> Board : formats
 
     Board --> EmptySpace : returns
+    Board --> RangeError : throws
 
     RowTiltObserver <|.. NullRowTiltObserver : implements
     RowTiltObserver <|.. Game : implements
 
-    ScoreObserver <|.. NullScoreObserver : implements
+    ScoreObserver <|.. NullScoreObserver : implements  
     ScoreObserver <|.. LevelUpScoreObserver : implements
 
     InvalidTiltDirectionError --|> Error : extends
 
     %% Main application relationships
-    Main --> Game : creates
-    Main --> Display : creates
-    Main --> Board : uses
-    Main --> LevelUpScoreObserver : creates
-    Main --> KeyPress : handles
+    Main2048 --> Game : creates & uses
+    Main2048 --> Display : creates & uses
+    Main2048 --> Board : displays
+    Main2048 --> LevelUpScoreObserver : creates & uses
+    Main2048 --> KeyPress : handles
+    Main2048 --> EndReason : uses
+
+    %% Notes about immutability
+    note for Board "populate() now returns new Board instance\n(immutable operation)"
+    note for Game "Uses immutable Board operations\nfor thread-safe state management"
 ```
