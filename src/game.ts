@@ -60,8 +60,8 @@ class Game implements RowTiltObserver {
     const startRows = this.shuffle([0, 1, 2, 3]);
     const startColumns = this.shuffle([0, 1, 2, 3]);
 
-    this._board.populate(startColumns[0], startRows[0], 2);
-    this._board.populate(startColumns[1], startRows[1], 2);
+    this._board = this._board.populate(startColumns[0], startRows[0], 2);
+    this._board = this._board.populate(startColumns[1], startRows[1], 2);
     this._scoreObserver = scoreObserver;
 
     return this._board;
