@@ -36,23 +36,6 @@ Ran all test suites.
 
 ```mermaid
 
-graph TD;
-    2048-->Game;
-    2048-->Display;
-    2048-->Board;
-    2048-->LevelUpScoreObserver;
-    2048-->InvalidTiltDirectionError;
-    Game-->Board;
-    Game-->BoardControl;
-    Game-->RowTiltObserver;
-    Game-->ScoreObserver;
-    Display-->Board;
-    BoardControl-->Board;
-    BoardControl-->RowControl;
-    BoardControl-->BoardRotator;
-    BoardControl-->RowTiltObserver;
-    RowControl-->RowTiltObserver;
-    BoardRotator-->Board;
-    
-
+erDiagram;
+    2048||--||Game: starts
 ```
