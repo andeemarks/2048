@@ -38,4 +38,6 @@ Ran all test suites.
 
 erDiagram
     2048||--||Game: starts
+    Game||--||Board: creates
+    Game||--||InvalidTiltDirectionError: throws
 ```
