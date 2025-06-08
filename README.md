@@ -36,8 +36,11 @@ Ran all test suites.
 
 ```mermaid
 
-erDiagram
-    2048||--||Game: starts
-    Game||--||Board: creates
-    Game||--||InvalidTiltDirectionError: throws
+classDiagram
+    2048--*Game: starts
+    2048--*Display: creates
+    Game--*Board: creates
+    Game--InvalidTiltDirectionError: throws
+    Game*--RowTiltObserver: implements
+    InvalidTiltDirectionError*--Error: extends
 ```
