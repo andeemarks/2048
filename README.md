@@ -32,7 +32,122 @@ Time:        1.457 s
 Ran all test suites.
 ```
 
-## Basic Relationships
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Main as 2048.ts (Main)
+    participant Game
+    participant BoardControl
+    participant BoardRotator
+    participant RowControl
+    participant Board
+    participant Display
+    participant ScoreObserver
+
+    Note over User, ScoreObserver: Game Initialization
+    User->>Main: Start Game
+    Main->>Game: new Game()
+    Main->>Game: start(scoreObserver)
+    Game->>Board: populate(col, row, 2) x2
+    Game-->>Main: return board
+    Main->>Display: new Display()
+    Main->>Board: spaces()
+    Board-->>Main: number[][]
+    Main->>Display: format(board)
+    Display-->>Main: formatted string
+    Main->>Main: show(boardString)
+
+    Note over User, ScoreObserver: Game Loop - Tilt Operation
+    User->>Main: keypress (e.g., "left")
+    Main->>Game: tilt(board, "left")
+    
+    activate Game
+    Game->>Game: _hasSlid = false
+    Game->>BoardControl: tiltLeft(board, this)
+    
+    activate BoardControl
+    BoardControl->>BoardControl: tilt(board, observer)
+    
+    loop for each row
+        BoardControl->>Board: rowAtPosition(row)
+        Board-->>BoardControl: number[]
+        BoardControl->>RowControl: new RowControl(row)
+        BoardControl->>RowControl: tilt(observer)
+        
+        activate RowControl
+        RowControl->>RowControl: slidePopulatedSpaces(observer)
+        
+        alt if spaces moved
+            RowControl->>Game: slid()
+            Game->>Game: _hasSlid = true
+        end
+        
+        RowControl->>RowControl: sumEqualNeighbours(spaces, observer)
+        
+        loop for each collapsible pair
+            RowControl->>Game: collapsed(value)
+            Game->>Game: _score += value
+            Game->>ScoreObserver: scoreIncreasedBy(value)
+            
+            alt if new score level
+                ScoreObserver->>ScoreObserver: _newScoreLevel = true
+            end
+        end
+        
+        RowControl-->>BoardControl: tilted row
+        deactivate RowControl
+    end
+    
+    BoardControl->>Board: new Board(tiltedRows)
+    BoardControl-->>Game: tiltedBoard
+    deactivate BoardControl
+    
+    Game->>Game: populateEmptySpace(tiltedBoard)
+    Game->>Board: findEmptySpaces()
+    Board-->>Game: emptySpaces[]
+    Game->>Game: getRandomInt(emptySpaces.length)
+    Game->>Game: choosePopulationValue()
+    Game->>Board: populate(col, row, value)
+    
+    Game-->>Main: newBoard
+    deactivate Game
+    
+    Main->>Main: updateBoard()
+    Main->>Board: spaces()
+    Board-->>Main: number[][]
+    Main->>Display: format(board)
+    Display-->>Main: formatted string
+    
+    alt if scoreObserver has new level
+        Main->>ScoreObserver: hasNewScoreLevel()
+        ScoreObserver-->>Main: true
+        Main->>ScoreObserver: resetNetScoreLevel()
+        Main->>Main: show with level up styling
+    else
+        Main->>Main: show with normal styling
+    end
+    
+    Note over User, ScoreObserver: Game State Checks
+    Main->>Board: isFull()
+    Board-->>Main: boolean
+    
+    alt if board full
+        Main->>Main: end(BoardFull)
+    else
+        Main->>Board: isComplete()
+        Board-->>Main: boolean
+        
+        alt if 2048 reached
+            Main->>Main: end(BoardComplete)
+        else
+            Note over User, Main: Continue game loop
+        end
+    end
+```
+
+## Class Diagram
 
 ```mermaid
 
