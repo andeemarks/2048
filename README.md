@@ -36,6 +36,6 @@ Ran all test suites.
 
 ```mermaid
 
-erDiagram;
+erDiagram
     2048||--||Game: starts
 ```
