@@ -44,5 +44,5 @@ classDiagram
     Game--InvalidTiltDirectionError: throws
     Game*--RowTiltObserver: implements
     Game--ScoreObserver: notifies
-    InvalidTiltDirectionError*--Error: extends
+    InvalidTiltDirectionError<|--Error: extends
 ```
