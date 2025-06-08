@@ -8,8 +8,8 @@ import Display from "./display";
 import Board from "./board";
 import readline from "readline";
 import { LevelUpScoreObserver } from "./score-observer";
+import { InvalidTiltDirectionError } from "./game";
 
-let rl: readline.Interface;
 let board: Board;
 let game: Game;
 let display: Display;
@@ -46,17 +46,12 @@ enum EndReason {
 }
 
 function setup(): void {
-  rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+  readline.createInterface({ input: process.stdin, output: process.stdout, });
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
 
   clear();
-  console.log(
-    chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
-  );
+  console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" })));
 
   game = new Game();
   game.start(scoreObserver);
@@ -67,10 +62,8 @@ function setup(): void {
 
 function updateBoard(): void {
   clear();
-  console.log(
-    chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" }))
-  );
-  console.log(chalk.bgWhiteBright.black(`Score: ${game.score()}`));
+  console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" })));
+  console.log(chalk.bgWhiteBright.black(`Score: ${game.score().toString()}`));
 
   show(display.format(board));
 }
@@ -117,15 +110,19 @@ function end(reason: EndReason): void {
   process.exit(0);
 }
 
+declare type KeyPress = {ctrl: boolean, name: string}
+
 function gameLoop(): void {
-  process.stdin.on("keypress", (_, key) => {
+  process.stdin.on("keypress", (_, key: KeyPress) => {
     if (key.ctrl && key.name === "c") {
       end(EndReason.PlayerQuit);
     } else {
       try {
         board = game.tilt(board, key.name.toLowerCase());
-      } catch (InvalidTiltDirectionError) {
-        console.log(chalk.red.bold("Valid input only please :-)"));
+      } catch (error) {
+        if (error instanceof InvalidTiltDirectionError) {
+          console.log(chalk.red.bold("Valid input only please :-)"));
+        }
       }
       updateBoard();
 
@@ -138,6 +135,7 @@ function gameLoop(): void {
     }
   });
 }
+
 
 setup();
 gameLoop();

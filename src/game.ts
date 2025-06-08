@@ -88,10 +88,10 @@ class Game implements RowTiltObserver {
     return this.getRandomInt(2) == 1 ? 2 : 4;
   }
 
-  tilt(board: Board, direction: Direction): Board {
+  tilt(board: Board, direction: string): Board {
     let tiltedBoard: Board;
     this._hasSlid = false;
-    switch (direction) {
+    switch (direction as Direction) {
       case Direction.Left:
         tiltedBoard = BoardControl.tiltLeft(board, this);
         break;
@@ -108,7 +108,7 @@ class Game implements RowTiltObserver {
         throw new InvalidTiltDirectionError(direction);
     }
 
-    return this._hasSlid ? this.populateEmptySpace(tiltedBoard) : tiltedBoard;
+    return this.populateEmptySpace(tiltedBoard);
   }
 }
 

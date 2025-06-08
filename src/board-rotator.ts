@@ -1,9 +1,9 @@
 import Board from "./board";
 
 class BoardRotator {
-  static rotate90Degrees(board: Board, rotationCount: number = 1): Board {
+  static rotate90Degrees(board: Board, rotationCount = 1): Board {
     if (rotationCount < 1 || rotationCount >= 4) {
-      throw Error;
+      throw new Error();
     }
 
     let spaces = board.spaces();

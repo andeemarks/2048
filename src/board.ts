@@ -50,7 +50,7 @@ class Board {
 
   rowAtPosition(position: number): number[] {
     if (position < 0 || position >= this.height()) {
-      throw new Error(`Illegal attempt to access row ${position} on board`);
+      throw new Error(`Illegal attempt to access row ${position.toString()} on board`);
     }
 
     return this._board[position];

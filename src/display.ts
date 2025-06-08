@@ -4,13 +4,13 @@ import Board from "./board";
 class Display {
   pad(value: number): number | string {
     if (value <= 9) {
-      return `  ${value} `;
+      return `  ${value.toString()} `;
     }
     if (value <= 99) {
-      return ` ${value} `;
+      return ` ${value.toString()} `;
     }
     if (value <= 999) {
-      return ` ${value}`;
+      return ` ${value.toString()}`;
     }
     return value;
   }
