@@ -39,10 +39,10 @@ Ran all test suites.
 classDiagram
     2048--*Game: starts
     2048--*Display: creates
-    Display--*Board: shows
+    Display--Board: shows
     Game--*Board: creates
     Game--InvalidTiltDirectionError: throws
     Game*--RowTiltObserver: implements
-    Game*--ScoreObserver: notifies
+    Game--ScoreObserver: notifies
     InvalidTiltDirectionError*--Error: extends
 ```
