@@ -31,3 +31,15 @@ Snapshots:   0 total
 Time:        1.457 s
 Ran all test suites.
 ```
+
+## Relationships
+
+```mermaid
+
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+
+```
