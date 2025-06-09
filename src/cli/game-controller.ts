@@ -18,7 +18,7 @@ export class GameController {
   private game: Game;
   private board: Board;
   private scoreObserver: LevelUpScoreObserver;
-  private observer?: GameStateObserver;
+  private stateObserver?: GameStateObserver;
 
   constructor() {
     this.game = new Game();
@@ -39,7 +39,7 @@ export class GameController {
       
       const endReason = this.checkGameEnd();
       if (endReason !== null) {
-        this.observer?.onGameEnd(endReason);
+        this.stateObserver?.onGameEnd(endReason);
         return false;
       }
       
@@ -53,11 +53,11 @@ export class GameController {
   }
 
   quit(): void {
-    this.observer?.onGameEnd(EndReason.PlayerQuit);
+    this.stateObserver?.onGameEnd(EndReason.PlayerQuit);
   }
 
   setObserver(observer: GameStateObserver): void {
-    this.observer = observer;
+    this.stateObserver = observer;
   }
 
   hasNewScoreLevel(): boolean {
@@ -79,6 +79,6 @@ export class GameController {
   }
 
   private notifyBoardUpdate(): void {
-    this.observer?.onBoardUpdate(this.board, this.game.score());
+    this.stateObserver?.onBoardUpdate(this.board, this.game.score());
   }
 }

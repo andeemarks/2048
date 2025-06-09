@@ -42,22 +42,22 @@ export class UIRenderer {
 
   showInitialScreen(): void {
     clear();
-    console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" })));
+    console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full", font: "Roman"})));
   }
 
   showBoard(board: Board, score: number, hasNewScoreLevel: boolean): void {
     clear();
-    console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full" })));
+    console.log(chalk.yellow(figlet.textSync("2048-ts", { horizontalLayout: "full", font: "Roman"})));
     console.log(chalk.bgWhiteBright.black(`Score: ${score.toString()}`));
     console.log(boxen(this.format(board), hasNewScoreLevel ? this.levelUpBoardBoxProps : this.normalBoardBoxProps));
   }
 
   redLog(message: string): void {
-    console.log( chalk.red( figlet.textSync(message, { horizontalLayout: "full" }) ) );
+    console.log( chalk.red( figlet.textSync(message, { horizontalLayout: "full", font: "Standard" }) ) );
   }
 
   greenLog(message: string): void {
-    console.log( chalk.green( figlet.textSync(message, { horizontalLayout: "full" }) ) );
+    console.log( chalk.green( figlet.textSync(message, { horizontalLayout: "full", font: "Standard" }) ) );
   }
 
   showGameEnd(reason: EndReason): void {
