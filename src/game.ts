@@ -1,5 +1,5 @@
 import Board from "./board";
-import BoardControl from "./board-control";
+import BoardTilter from "./board-control";
 import { RowTiltObserver } from "./row-tilt-observer";
 import { ScoreObserver, NullScoreObserver } from "./score-observer";
 
@@ -87,16 +87,16 @@ class Game implements RowTiltObserver {
     this._hasSlid = false;
     switch (direction as Direction) {
       case Direction.Left:
-        tiltedBoard = BoardControl.tiltLeft(board, this);
+        tiltedBoard = BoardTilter.left(board, this);
         break;
       case Direction.Up:
-        tiltedBoard = BoardControl.tiltUp(board, this);
+        tiltedBoard = BoardTilter.up(board, this);
         break;
       case Direction.Down:
-        tiltedBoard = BoardControl.tiltDown(board, this);
+        tiltedBoard = BoardTilter.down(board, this);
         break;
       case Direction.Right:
-        tiltedBoard = BoardControl.tiltRight(board, this);
+        tiltedBoard = BoardTilter.right(board, this);
         break;
       default:
         throw new InvalidTiltDirectionError(direction);
